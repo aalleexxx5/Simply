@@ -45,11 +45,10 @@ public class Mem {
     public static String[] getValuesInArgs(String[] args){
         String[] ans = new String[args.length];
         for (int i=0; i<args.length;i++){
-            if (args[i].contains(Constants.VARIABLE_SYMBOL)) {
-                ans[i] = Lookup.getMemInstance().getValue(args[i].substring(1));
-            }else{
-                ans[i] = args[i];
+            while (args[i].contains(Constants.VARIABLE_SYMBOL)) {
+                args[i] = args[i].substring(0,args[i].lastIndexOf(Constants.VARIABLE_SYMBOL))+Lookup.getMemInstance().getValue(args[i].substring(args[i].lastIndexOf(Constants.VARIABLE_SYMBOL)+1));
             }
+            ans[i] = args[i];
         }
         return ans;
     }

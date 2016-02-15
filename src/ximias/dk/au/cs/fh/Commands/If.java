@@ -89,7 +89,6 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 }else{
                     return true;
                 }
-            case "run":
             case "do":
                 if (eventstate){
                     return true;
