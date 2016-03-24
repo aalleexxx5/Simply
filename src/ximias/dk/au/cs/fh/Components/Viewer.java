@@ -1,5 +1,7 @@
 package ximias.dk.au.cs.fh.Components;
 
+import ximias.dk.au.cs.fh.Commands.Run;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -69,8 +71,11 @@ public class Viewer extends JFrame{
     }
 
     public static void doneExecution(){
-        if (exeThread.equals(Thread.currentThread()))
+        if (Run.isDone()&&!exeThread.isAlive())
             runButton.setEnabled(true);
+        else if(exeThread.equals(Thread.currentThread())&&Run.noThreads()){
+            runButton.setEnabled(true);
+        }
     }
 
     public static String getInput(){

@@ -11,9 +11,8 @@ public class TextStyle extends Command {
         if(args.length>0){
             Viewer.setFont(args[0],-1);
             return true;
-        }else{
+        }
             Viewer.print("A textlayout was not provided");
             return false;
-        }
     }
 }

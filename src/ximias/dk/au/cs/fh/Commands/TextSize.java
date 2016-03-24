@@ -12,9 +12,8 @@ public class TextSize extends Command{
         if(Numbers.isNumber(args[0])){
             Viewer.setFont(null,Integer.valueOf(args[0]));
             return true;
-        }else{
+        }
             Viewer.print("Textsize has to be a positive number to work");
             return false;
-        }
     }
 }
