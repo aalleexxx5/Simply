@@ -13,6 +13,7 @@ public class Echo extends Command {
         String print = "";
         args = Mem.getValuesInArgs(args);
         for (int i=0; i<args.length;i++){
+            args[i] = args[i].replace(Constants.ESCAPE_STAR,"*");
             if (i+1>=args.length||args[i+1].contains(Constants.NO_SPACE_SYMBOL)){
                 print = print + args[i];
                 i++;

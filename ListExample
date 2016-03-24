@@ -1,0 +1,22 @@
+echo list example
+set a 10
+set a*a 12
+set a*a*a 14
+set a*a*a*a 16
+set a*a*a*a*a 18
+set a*a*a*a*a*a 20
+
+echo *a*a
+echo *a10
+echo *a12
+
+echo iterator test
+set i 5
+set list & _ star _ a
+set b *list
+section iter
+echo *b
+set b *list _ *b
+sub i *i 1
+if *i >= 0 jumpto iter
+exit
