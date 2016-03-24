@@ -20,8 +20,10 @@ public class Viewer extends JFrame{
     private static final Object lock=" ";
     private static JButton submit;
     private static JButton runButton;
+    private static JFrame win;
 
     void createUI(){
+        win = this;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         runButton = new JButton("Start Program");
@@ -86,6 +88,21 @@ public class Viewer extends JFrame{
         String ret = input.getText();
         input.setText("");
         return ret;
+    }
+
+    public static void setFont(String type ,int size){
+        if (type.isEmpty()){
+            output.setFont(new Font(output.getFont().getName(),Font.PLAIN,size));
+        }
+        if (size<1){
+            output.setFont(new Font(type,Font.PLAIN,output.getFont().getSize()));
+        }
+    }
+    public static void setTextColour(int value){
+            output.setForeground(new Color(value));
+    }
+    public static void resizeApp(int w, int h){
+        win.setSize(w,h);
     }
 
     public static void print(String line){

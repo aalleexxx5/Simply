@@ -1,0 +1,29 @@
+echo this program is for demonstrating the new text changes
+wait 1500
+echo in a moment I will start flashing the text
+wait 1000
+set flashes 6
+run flash
+exit
+
+
+
+subroutine flash
+set b true
+section a
+if *flashes < 1 endsubroutine
+sub flashes *flashes 1
+wait 500
+if *b = true jumpto a1
+if *b = false jumpto a2
+
+section a1
+textcolor ff0000
+set b false
+jumpto a
+
+section a2
+set b true
+textcolor 000000
+jumpto a
+endsubroutine
