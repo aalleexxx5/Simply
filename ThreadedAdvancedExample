@@ -1,6 +1,9 @@
 echo Threaded _ advanced _ example
 set a 1
 set b 1
+run alpha
+
+
 subroutine alpha
 section a
 echo subroutine1 _ says _ *a
@@ -8,6 +11,8 @@ add a *a 1
 wait 500
 if *a < 10 jumpto a
 endsubroutine
+
+
 subroutine beta
 section b
 echo subroutine2 _ says _ *b
@@ -16,10 +21,13 @@ wait 500
 if *b < 10 jumpto b
 jumpto bDone
 endsubroutine
-run alpha
+
+
 run beta
 echo ping
 exit
+
+
 section bDone
 echo b _ is _ done
 wait 1000

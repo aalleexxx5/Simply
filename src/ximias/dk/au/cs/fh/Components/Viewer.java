@@ -2,9 +2,6 @@ package ximias.dk.au.cs.fh.Components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileReader;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -95,5 +92,10 @@ public class Viewer extends JFrame{
         System.out.println(line);
         output.append("\n" + line);
             output.setCaretPosition(output.getDocument().getLength());
+    }
+
+    public static void clear(){
+        System.out.println("screen was cleared");
+        output.setText("");
     }
 }

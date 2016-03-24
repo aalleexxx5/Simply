@@ -35,6 +35,7 @@ public class Lookup implements IFlowchange{
         commands.add(new If(this));
         commands.add(new Exit(this));
         commands.add(new Input());
+        commands.add(new Clear());
         setCurrentLines(lines);
     }
 

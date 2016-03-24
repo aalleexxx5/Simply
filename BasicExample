@@ -1,0 +1,37 @@
+echo Hi _ I _ am _ a _ Basic _ example.
+wait 2000
+echo I _ am _ supposed _ to _ give _ you _ an _ overview.
+set a 10
+wait 2000
+echo You _ can _ use _ variables _ with _ the _ command _ set.
+wait 2000
+echo for _ example, _ the _ value _ of _ the _ variable _ a _ is _ *a
+wait 2000
+echo there _ is _ even _ a _ command _ to _ let _ the _ user _ insert _ things
+wait 500
+echo try _ now:
+input b
+echo that _ wasn't _ hard _ now, _ was _ it?
+wait 1000
+echo but _ why _ did _ you _ write: _ *b
+wait 2000
+echo let's _ try _ something _ new...
+wait 1000
+echo let _ me _ just _ clean _ up _ a _ bit, _ hang _ tight
+wait 2000
+clear
+echo alright _ now, _ let _ me _ count _ to _ 10
+wait 2000
+set c 1
+
+
+section count
+echo I'm _ counting: _ *c !
+add c *c 1
+wait 500
+if *c <= 10 jumpto count
+echo see? _ i _ can _ count _ as _ well!
+wait 2000
+echo now _ everything _ got _ messy _ again..
+wait 2000
+echo I _ guess _ i'm _ done _ then. _ Bye!

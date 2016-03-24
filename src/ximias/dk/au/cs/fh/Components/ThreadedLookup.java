@@ -28,6 +28,7 @@ public class ThreadedLookup implements IFlowchange {
             commands.add(new If(this));
             commands.add(new Exit(this));
             commands.add(new Input());
+            commands.add(new Clear());
         }
 
         public boolean run(String cmd, String[] args){

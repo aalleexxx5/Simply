@@ -1,5 +1,6 @@
 echo threaded _ example
 set a 5
+
 subroutine one
 section alfa
 echo ping
@@ -7,6 +8,7 @@ wait 500
 sub a *a 1
 if *a > 1 jumpto alfa
 endsubroutine
+
 run one
 echo input _ stuff:
 input in
