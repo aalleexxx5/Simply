@@ -13,10 +13,11 @@ public class Echo extends Command {
         String print = "";
         args = Mem.getValuesInArgs(args);
         for (int i=0; i<args.length;i++){
-            if (args[i].contains(Constants.SPACE_SYMBOL)){
-                print = print + " ";
+            if (i+1>=args.length||args[i+1].contains(Constants.NO_SPACE_SYMBOL)){
+                print = print + args[i];
+                i++;
             }else{
-                print =print + args[i];
+                print =print + args[i] + " ";
             }
         }
         Viewer.print(print);
