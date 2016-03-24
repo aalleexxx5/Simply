@@ -16,10 +16,10 @@ public class Exechuter implements Runnable{
         int i = 1;
         Viewer.print("running Code... ");
         while (lookup.getFlowChange()) {
-            lines = Lookup.getLines();
+            lines = lookup.getCurrentLines();
             lookup.setFlowChange(false);
             for (String line : lines) {
-                ArrayList<String> arg = new ArrayList<String>();
+                ArrayList<String> arg = new ArrayList<>();
                 String cmd;
                 if (line.contains(" ")) {
                     cmd = line.substring(0, line.indexOf(" "));

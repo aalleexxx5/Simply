@@ -1,4 +1,4 @@
-echo threaded _ test
+echo threaded _ example
 set a 5
 subroutine one
 section alfa

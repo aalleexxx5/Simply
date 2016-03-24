@@ -8,23 +8,24 @@ import java.util.ArrayList;
  * Created by Alex on 05/01/2016.
  */
 public class Subroutine extends Command {
-    ArrayList<SectionPair> routines = new ArrayList<SectionPair>();
+    ArrayList<SectionPair> routines = new ArrayList<>();
     public Subroutine(ArrayList<String> lines,Lookup lookup){
-        int i = 0;
         ArrayList<String> newlines = (ArrayList<String>) lines.clone();
-        for(String line:lines){
-            if(line.toLowerCase().startsWith("subroutine")){ //remove the lines added to the subroutine
+        int l=0;
+        for(int i = 0; i<lines.size();i++){
+            if(lines.get(i).toLowerCase().startsWith("subroutine")){ //remove the lines added to the subroutine
                 for(int j = i; j<lines.size();j++){
                     if (lines.get(j).toLowerCase().startsWith("endsubroutine")){
-                        routines.add(new SectionPair(line.substring(11), new ArrayList<String>(lines.subList(i+1, j+1))));
+                        routines.add(new SectionPair(lines.get(i).substring(11), new ArrayList<>(lines.subList(i+1, j+1))));
                         for(int k=i; k<=j;k++){
-                            newlines.remove(i);
+                            newlines.remove(i-l);
                         }
+                        l+=1+j-i;
+                        i=j;
                         break;
                     }
                 }
             }
-            i++;
         }
         Lookup.setLines(newlines);
     }

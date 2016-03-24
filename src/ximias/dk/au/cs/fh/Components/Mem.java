@@ -1,45 +1,66 @@
 package ximias.dk.au.cs.fh.Components;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 05/01/2016.
  */
 public class Mem {
-    ArrayList<MemPair> memory = new ArrayList<MemPair>();
-
+    ArrayList<MemPair> memory = new ArrayList<>();
+    private final ReentrantLock lock = new ReentrantLock();
     public void add(MemPair item){
-        if (containsKey(item.getKey())){
-            remove(item.getKey());
+        lock.lock();
+        try {
+            if (containsKey(item.getKey())) {
+                remove(item.getKey());
+            }
+            memory.add(item);
+        }finally {
+            lock.unlock();
         }
-        memory.add(item);
     }
 
     void remove(String memKey){
-        for (MemPair pair: memory){
-            if (pair.getKey().equals(memKey)){
-                memory.remove(pair);
-                return;
+        lock.lock();
+        try {
+            for (MemPair pair : memory) {
+                if (pair.getKey().equals(memKey)) {
+                    memory.remove(pair);
+                    return;
+                }
             }
+        }finally {
+            lock.unlock();
         }
     }
 
     public String getValue(String memKey){
-        for (MemPair pair:memory){
-            if(pair.getKey().equals(memKey)){
-                return(pair.getValue());
+        lock.lock();
+        try {
+            for (MemPair pair : memory) {
+                if (pair.getKey().equals(memKey)) {
+                    return (pair.getValue());
+                }
             }
+            return ("");
+        }finally {
+            lock.unlock();
         }
-        return ("");
     }
 
     public boolean containsKey(String key){
-        for (MemPair pair : memory){
-            if (pair.getKey().equals(key)){
-                return true;
+        lock.lock();
+        try {
+            for (MemPair pair : memory) {
+                if (pair.getKey().equals(key)) {
+                    return true;
+                }
             }
+            return false;
+        }finally {
+            lock.unlock();
         }
-        return false;
     }
 
     public static String[] getValuesInArgs(String[] args){

@@ -67,6 +67,13 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 if (Numbers.isNumber(args[0]))
                     return event(2, true);
                 return event(2, false);
+            case "contains":
+            case "has":
+                if (args[0].toLowerCase().contains(args[1].toLowerCase())) {
+                    return event(3, true);
+                }else {
+                    return event(3, false);
+                }
             default:
                 Viewer.print("the condition was not recognized");
                 return false;
@@ -80,7 +87,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 if(eventstate) {
                     lookup.setFlowChange(true);
                     try {
-                        lookup.setCurrentLines(new ArrayList<String>(Lookup.getLines().subList(Integer.parseInt(args[argnum + 1])+1, Lookup.getLines().size())));
+                        lookup.setCurrentLines(new ArrayList<>(Lookup.getLines().subList(Integer.parseInt(args[argnum + 1])+1, Lookup.getLines().size())));
                     } catch (IndexOutOfBoundsException e) {
                         Viewer.print("Skipped more lines than was available");
                         return false;
@@ -95,7 +102,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 }else{
                     lookup.setFlowChange(true);
                     try {
-                        lookup.setCurrentLines(new ArrayList<String>(Lookup.getLines().subList(Integer.parseInt(args[argnum + 1])+1, Lookup.getLines().size())));
+                        lookup.setCurrentLines(new ArrayList<>(Lookup.getLines().subList(Integer.parseInt(args[argnum + 1])+1, Lookup.getLines().size())));
                     } catch (IndexOutOfBoundsException e) {
                         Viewer.print("Skipped more lines than was available");
                         return false;

@@ -12,7 +12,7 @@ public class Lookup implements IFlowchange{
     private static Mem memInstance = new Mem();
     private static Section section;
     private static Subroutine subroutine;
-    private static ArrayList<Command> commands = new ArrayList<Command>();
+    private static ArrayList<Command> commands = new ArrayList<>();
     private boolean flowChange = true;
     private Jumpto jumpto = new Jumpto(this);
     public Lookup(ArrayList<String> l){
@@ -35,6 +35,7 @@ public class Lookup implements IFlowchange{
         commands.add(new If(this));
         commands.add(new Exit(this));
         commands.add(new Input());
+        setCurrentLines(lines);
     }
 
     public boolean run(String cmd, String[] args){
