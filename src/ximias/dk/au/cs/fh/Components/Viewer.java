@@ -35,35 +35,64 @@ public class Viewer extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         runButton = new JButton("Start Program");
-        runButton.setPreferredSize(new Dimension(380, 60));
+        //runButton.setPreferredSize(new Dimension(380, 60));
         commandButton = new JToggleButton();
-        commandButton.setPreferredSize(new Dimension(10,60));
+        //commandButton.setPreferredSize(new Dimension(10,60));
         input = new JTextField();
         submit = new JButton ("submit");
-        submit.setPreferredSize(new Dimension(100, 20));
+        //submit.setPreferredSize(new Dimension(100, 20));
         input.setEditable(false);
-        input.setPreferredSize(new Dimension(300, 20));
+        //input.setPreferredSize(new Dimension(300, 20));
         submit.setEnabled(false);
         output = new JTextArea();
         output.setEditable(false);
         JScrollPane outputContainer = new JScrollPane(output);
         outputContainer.setPreferredSize(new Dimension(400, 180));
         outputContainer.setAutoscrolls(true);
-        JPanel inputsContainer = new JPanel(new FlowLayout());
-        JPanel topContainer  = new JPanel(new FlowLayout());
 
+        SpringLayout topContainerLayout = new SpringLayout();
+        JPanel topContainer  = new JPanel(topContainerLayout);
+        topContainerLayout.putConstraint(SpringLayout.SOUTH,topContainer,60,SpringLayout.NORTH,topContainer);
+
+        topContainerLayout.putConstraint(SpringLayout.WEST,runButton,0,SpringLayout.WEST,topContainer);
+        topContainerLayout.putConstraint(SpringLayout.NORTH,runButton,0,SpringLayout.NORTH,topContainer);
+        topContainerLayout.putConstraint(SpringLayout.SOUTH,runButton,0,SpringLayout.SOUTH,topContainer);
+        topContainerLayout.putConstraint(SpringLayout.EAST,runButton,-1,SpringLayout.WEST,commandButton);
+
+        topContainerLayout.putConstraint(SpringLayout.WEST,commandButton,-15,SpringLayout.EAST,topContainer);
+        topContainerLayout.putConstraint(SpringLayout.EAST,commandButton,0,SpringLayout.EAST,topContainer);
+        topContainerLayout.putConstraint(SpringLayout.NORTH,commandButton,0,SpringLayout.NORTH,topContainer);
+        topContainerLayout.putConstraint(SpringLayout.SOUTH,commandButton,0,SpringLayout.SOUTH,topContainer);
 
         topContainer.add(runButton);
         topContainer.add(commandButton);
+
+
+        SpringLayout inputsContainerLayout = new SpringLayout();
+        JPanel inputsContainer = new JPanel(inputsContainerLayout);
+        inputsContainerLayout.putConstraint(SpringLayout.SOUTH,inputsContainer,20,SpringLayout.NORTH,inputsContainer);
+
+        inputsContainerLayout.putConstraint(SpringLayout.WEST,input,0,SpringLayout.WEST,inputsContainer);
+        inputsContainerLayout.putConstraint(SpringLayout.EAST,input,1,SpringLayout.WEST,submit);
+        inputsContainerLayout.putConstraint(SpringLayout.NORTH,input,0,SpringLayout.NORTH,inputsContainer);
+        inputsContainerLayout.putConstraint(SpringLayout.SOUTH,input,0,SpringLayout.SOUTH,inputsContainer);
+
+        inputsContainerLayout.putConstraint(SpringLayout.WEST,submit,-100,SpringLayout.EAST,inputsContainer);
+        inputsContainerLayout.putConstraint(SpringLayout.EAST,submit,0,SpringLayout.EAST,inputsContainer);
+        inputsContainerLayout.putConstraint(SpringLayout.NORTH,submit,0,SpringLayout.NORTH,inputsContainer);
+        inputsContainerLayout.putConstraint(SpringLayout.SOUTH,submit,0,SpringLayout.SOUTH,inputsContainer);
+
         inputsContainer.add(input);
         inputsContainer.add(submit);
+
         add(topContainer,"North");
         add(inputsContainer,"South");
         add(outputContainer, "Center");
         pack();
 
-
         runButton.addActionListener(e -> {
+            lookup.setFlowChange(true);
+            lookup.setCurrentLines(Lookup.getLines());
             exeThread = new Thread(new Exechuter(lookup));
             exeThread.start();
             runButton.setEnabled(false);

@@ -1,0 +1,8 @@
+echo Window example
+windowsize 500 500
+wait 1500
+windowsize small
+wait 1500
+windowsize medium
+wait 1500
+windowsize large

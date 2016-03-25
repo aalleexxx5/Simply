@@ -40,6 +40,7 @@ public class Lookup implements IFlowchange{
         commands.add(new TextColor());
         commands.add(new TextSize());
         commands.add(new TextStyle());
+        commands.add(new WindowSize());
         commands.add(new Execute());
         setCurrentLines(lines);
     }
