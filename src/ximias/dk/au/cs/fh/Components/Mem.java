@@ -5,9 +5,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Keeps track of the variables used.
  */
 public class Mem {
-    ArrayList<MemPair> memory = new ArrayList<>();
+    private final ArrayList<MemPair> memory = new ArrayList<>();
     private final ReentrantLock lock = new ReentrantLock();
     public void add(MemPair item){
         lock.lock();
@@ -21,7 +22,7 @@ public class Mem {
         }
     }
 
-    void remove(String memKey){
+    private void remove(String memKey){
         lock.lock();
         try {
             for (MemPair pair : memory) {
@@ -35,7 +36,7 @@ public class Mem {
         }
     }
 
-    public String getValue(String memKey){
+    private String getValue(String memKey){
         lock.lock();
         try {
             for (MemPair pair : memory) {
@@ -49,7 +50,7 @@ public class Mem {
         }
     }
 
-    public boolean containsKey(String key){
+    private boolean containsKey(String key){
         lock.lock();
         try {
             for (MemPair pair : memory) {

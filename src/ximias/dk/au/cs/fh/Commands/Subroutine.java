@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Command. This is the closest you get to a function.
  */
 public class Subroutine extends Command {
-    ArrayList<SectionPair> routines = new ArrayList<>();
-    public Subroutine(ArrayList<String> lines,Lookup lookup){
+    private final ArrayList<SectionPair> routines = new ArrayList<>();
+    public Subroutine(ArrayList<String> lines){
+        //noinspection unchecked
         ArrayList<String> newlines = (ArrayList<String>) lines.clone();
         int l=0;
         for(int i = 0; i<lines.size();i++){
@@ -46,6 +48,16 @@ public class Subroutine extends Command {
             }
         }
         return null;
+    }
+
+    @Override
+    public String description() {
+        return "begins a subroutine. A subroutine must end with endsubroutine";
+    }
+
+    @Override
+    public String use(){
+        return "subroutine <name>";
     }
 
     @Override

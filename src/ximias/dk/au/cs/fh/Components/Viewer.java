@@ -3,17 +3,20 @@ package ximias.dk.au.cs.fh.Components;
 import ximias.dk.au.cs.fh.Commands.Run;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Houses the UI. Prints the text. Changes the UI.
  */
 public class Viewer extends JFrame{
-    String[] args;
-    FileManager reader = new FileManager();
     private static Thread exeThread;
     public Viewer(String[] args){
-        this.args = args;
+        lookup = new Lookup(FileManager.readFileList(args[0]));
         createUI();
     }
 
@@ -23,13 +26,18 @@ public class Viewer extends JFrame{
     private static JButton submit;
     private static JButton runButton;
     private static JFrame win;
+    private static JToggleButton commandButton;
+    private static JFrame commandFrame;
+    private final Lookup lookup;
 
-    void createUI(){
+    private void createUI(){
         win = this;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         runButton = new JButton("Start Program");
-        runButton.setPreferredSize(new Dimension(400, 60));
+        runButton.setPreferredSize(new Dimension(380, 60));
+        commandButton = new JToggleButton();
+        commandButton.setPreferredSize(new Dimension(10,60));
         input = new JTextField();
         submit = new JButton ("submit");
         submit.setPreferredSize(new Dimension(100, 20));
@@ -42,18 +50,21 @@ public class Viewer extends JFrame{
         outputContainer.setPreferredSize(new Dimension(400, 180));
         outputContainer.setAutoscrolls(true);
         JPanel inputsContainer = new JPanel(new FlowLayout());
+        JPanel topContainer  = new JPanel(new FlowLayout());
 
 
-        add(runButton, "North");
+        topContainer.add(runButton);
+        topContainer.add(commandButton);
         inputsContainer.add(input);
         inputsContainer.add(submit);
+        add(topContainer,"North");
         add(inputsContainer,"South");
         add(outputContainer, "Center");
         pack();
 
 
         runButton.addActionListener(e -> {
-            exeThread = new Thread(new Exechuter(reader.readFileList(args[0])));
+            exeThread = new Thread(new Exechuter(lookup));
             exeThread.start();
             runButton.setEnabled(false);
         });
@@ -68,6 +79,64 @@ public class Viewer extends JFrame{
                 }*/
             }
         });
+
+        commandButton.addActionListener(e -> {
+            if(commandButton.isSelected()){//button is pressed
+                SwingUtilities.invokeLater(this::createCommandList);
+            }else{//button is released
+                commandFrame.dispose();
+            }
+        });
+    }
+
+    private void createCommandList(){
+        commandFrame = new JFrame();
+        commandFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        int commandLength=0;
+        int descriptionLength =0;
+        for(int i=0;i<Lookup.getNumCommands();i++){
+            commandLength = Math.max(commandLength,Lookup.getCommandName(i).length());
+            descriptionLength = Math.max(descriptionLength,Lookup.getCommandDescription(i).length());
+        }
+        TableModel commandData = new AbstractTableModel() {
+            @Override
+            public int getRowCount() {
+                return Lookup.getNumCommands();
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 2;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                if (columnIndex==0){
+                    return Lookup.getCommandName(rowIndex);
+                }else{
+                    return Lookup.getCommandDescription(rowIndex);
+                }
+            }
+        };
+        JTable commandTable = new JTable(commandData);
+        commandTable.getColumnModel().getColumn(0).setMinWidth((commandLength*7)+2);
+        commandTable.getColumnModel().getColumn(0).setMaxWidth((commandLength*7)+4);
+        commandTable.getColumnModel().getColumn(1).setMinWidth(descriptionLength*6);
+        JScrollPane scrollpane = new JScrollPane(commandTable);
+        commandTable.getSelectionModel().addListSelectionListener(e -> {
+            if (commandTable.getSelectedRow()>=0){
+                JOptionPane.showMessageDialog(null,Lookup.getCommandUse(commandTable.getSelectedRow()),"Usage",JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        commandFrame.setPreferredSize(new Dimension(commandTable.getMinimumSize().width,commandTable.getRowHeight()*(commandTable.getRowCount()+5)));
+        commandFrame.add(scrollpane);
+        commandFrame.setVisible(true);
+        commandFrame.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent winEvt){
+                commandButton.setSelected(false);
+            }
+        });
+        commandFrame.pack();
     }
 
     public static void doneExecution(){
@@ -106,6 +175,7 @@ public class Viewer extends JFrame{
     public static void setTextColour(int value){
             output.setForeground(new Color(value));
     }
+    @SuppressWarnings("unused")
     public static void resizeApp(int w, int h){
         win.setSize(w,h);
     }
@@ -117,7 +187,7 @@ public class Viewer extends JFrame{
     }
 
     public static void clear(){
-        System.out.println("screen was cleared");
+        System.out.println("screen was cleared \n \n");
         output.setText("");
     }
 }

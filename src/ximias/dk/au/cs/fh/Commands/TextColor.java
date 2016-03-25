@@ -5,8 +5,19 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 24/03/2016.
+ * Command. Changes the colour of the text.
  */
 public class TextColor extends Command {
+    @Override
+    public String description() {
+        return "changes all text to a certain color";
+    }
+
+    @Override
+    public String use(){
+        return "textcolor <color> \n valid colorvalues are as hex (0-ffffff) or number (0-16777215) \n every four bits describes each color";
+    }
+
     @Override
     public boolean execute(String[] args) {
         if(args.length>0) {

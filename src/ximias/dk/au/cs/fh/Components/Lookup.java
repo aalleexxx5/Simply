@@ -6,22 +6,25 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Keeps track of everything. EVERYTHING! (except symbols, that is Constants's job)
  */
 public class Lookup implements IFlowchange{
     private static ArrayList<String> lines;
-    private static Mem memInstance = new Mem();
+    private static final Mem memInstance = new Mem();
     private static Section section;
     private static Subroutine subroutine;
-    private static ArrayList<Command> commands = new ArrayList<>();
+    private static final ArrayList<Command> commands = new ArrayList<>();
     private boolean flowChange = true;
-    private Jumpto jumpto = new Jumpto(this);
+    private final Jumpto jumpto = new Jumpto(this);
     public Lookup(ArrayList<String> l){
         flowChange = true;
         lines = l;
         section = new Section(l);
-        subroutine = new Subroutine(l, this);
+        subroutine = new Subroutine(l);
         commands.add(new Echo());
         commands.add(new Set());
+        commands.add(jumpto);
+        commands.add(new If(this));
         commands.add(new Add());
         commands.add(new Sub());
         commands.add(new Mul());
@@ -30,15 +33,14 @@ public class Lookup implements IFlowchange{
         commands.add(section);
         commands.add(subroutine);
         commands.add(new endsubroutine(this));
-        commands.add(jumpto);
-        commands.add(new Run());
-        commands.add(new If(this));
-        commands.add(new Exit(this));
-        commands.add(new Input());
         commands.add(new Clear());
+        commands.add(new Run());
+        commands.add(new Input());
+        commands.add(new Exit(this));
         commands.add(new TextColor());
         commands.add(new TextSize());
         commands.add(new TextStyle());
+        commands.add(new Execute());
         setCurrentLines(lines);
     }
 
@@ -66,13 +68,29 @@ public class Lookup implements IFlowchange{
         return false;
     }
 
-    public static boolean runMainCommand(String cmd, String[] args){
+    public static boolean runMainCommand(@SuppressWarnings("SameParameterValue") String cmd, String[] args){
         for (Command command : commands){
             if(command.name().equalsIgnoreCase(cmd)){
                 return command.execute(args);
             }
         }
         return false;
+    }
+
+    public static int getNumCommands(){
+        return commands.size();
+    }
+
+    public static String getCommandName(int index){
+        return commands.get(index).name();
+    }
+
+    public static String getCommandUse(int index){
+        return commands.get(index).use();
+    }
+
+    public static String getCommandDescription(int index){
+        return commands.get(index).description();
     }
 
     public static Mem getMemInstance(){

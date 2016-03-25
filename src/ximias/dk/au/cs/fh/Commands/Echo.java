@@ -6,8 +6,19 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Command. Prints the arguments to screen
  */
 public class Echo extends Command {
+    @Override
+    public String description() {
+        return "Writes arguments to console. '_' concatenates two arguments with no space in between";
+    }
+
+    @Override
+    public String use(){
+        return "echo <arg1> (optional) <arg2> ... <argn>\n To write '*' use "+Constants.ESCAPE_STAR;
+    }
+
     @Override
     public boolean execute(String[] args) {
         String print = "";

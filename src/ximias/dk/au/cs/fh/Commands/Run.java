@@ -6,13 +6,27 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 
 /**
  * Created by Alex on 14/01/2016.
+ * Command. Runs a subroutine in a new thread.
+ * you thought multithreading was hard? try multithreading in the same function, sharing the same variables Concurrency issues, here I come!
  */
 public class Run extends Command {
-    private  static ArrayList<Thread> threads = new ArrayList();
+    private  static ArrayList<Thread> threads = new ArrayList<>();
+
+    @Override
+    public String description() {
+        return "runs a subroutine as a new task. This allows for multitasking";
+    }
+
+    @Override
+    public String use(){
+        return "run <subroutine>";
+    }
+
     @Override
     public boolean execute(String[] args) {
         if (args.length<1){
@@ -45,13 +59,7 @@ public class Run extends Command {
         return threads.size()<1;
     }
 
-    public static void removeDeads(){
-        ArrayList<Thread> temp = new ArrayList<>();
-        for (Thread thread:threads) {
-            if (thread.isAlive()){
-                temp.add(thread);
-            }
-        }
-        threads = temp;
+    private static void removeDeads(){
+        threads = threads.stream().filter(Thread::isAlive).collect(Collectors.toCollection(ArrayList::new));
     }
 }

@@ -6,13 +6,25 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Command. Allows branching
  */
 public class If extends Command { // if <value1> <condition> <value2> <event when true>
-    String[] args;
-    IFlowchange lookup;
+    private String[] args;
+    private final IFlowchange lookup;
     public If(IFlowchange lookup){
         this.lookup = lookup;
     }
+
+    @Override
+    public String description() {
+        return "Allows branching of the program based on two arguments relation to each other";
+    }
+
+    @Override
+    public String use(){
+        return "if <arg1> <condition> <arg2> <command> <command arg> ... \n conditions are: =, >, <, <=, >=, number and contains";
+    }
+
     @Override
     public boolean execute(String[] args) {
         args = Mem.getValuesInArgs(args);

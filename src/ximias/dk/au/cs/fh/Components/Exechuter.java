@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 10/01/2016.
+ * Runs the Code line-by-line with a lot of help from Lookup
  */
-public class Exechuter implements Runnable{
-    private ArrayList<String> lines;
-    public Exechuter(ArrayList<String> lines){
-        this.lines = lines;
+class Exechuter implements Runnable{
+    private final IFlowchange lookup;
+    public Exechuter(Lookup lookup){
+        this.lookup = lookup;
     }
 
     public void run() {
-        Lookup lookup = new Lookup(lines);
+        ArrayList<String> lines;
         int i = 1;
         Viewer.print("running Code... ");
         while (lookup.getFlowChange()) {

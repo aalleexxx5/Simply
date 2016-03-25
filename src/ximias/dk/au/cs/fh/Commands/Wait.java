@@ -6,15 +6,26 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 10/01/2016.
+ * Command. Makes current thread sleep.
  */
 public class Wait extends Command {
+    @Override
+    public String description() {
+        return "waits a specified amount of milliseconds";
+    }
+
+    @Override
+    public String use(){
+        return "wait <time>";
+    }
+
     @Override
     public boolean execute(String[] args) {
         args = Mem.getValuesInArgs(args);
         if (Numbers.isNumberAndPositive(args[0])) {
             try {
                 Thread.sleep(Integer.valueOf(args[0]));
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {}
             return true;
         }
         Viewer.print("unable to wait for negative numbers");

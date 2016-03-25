@@ -4,17 +4,28 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Command. Defines a destination for Goto.. I mean JumpTo
  */
 public class Section extends Command {
-    ArrayList<SectionPair> sections = new ArrayList<SectionPair>();
+    private final ArrayList<SectionPair> sections = new ArrayList<>();
     public Section(ArrayList<String> lines){
         int i = 0;
         for(String line:lines){
             if(line.toLowerCase().startsWith("section")){
-                sections.add(new SectionPair(line.substring(8),new ArrayList<String>(lines.subList(i+1, lines.size()))));
+                sections.add(new SectionPair(line.substring(8), new ArrayList<>(lines.subList(i + 1, lines.size()))));
             }
             i++;
         }
+    }
+
+    @Override
+    public String description() {
+        return "declare the start of a section";
+    }
+
+    @Override
+    public String use(){
+        return "section <name>";
     }
 
     @Override
@@ -42,8 +53,8 @@ public class Section extends Command {
 }
 
  class SectionPair {
-    private String key;
-    private ArrayList<String> value;
+    private final String key;
+    private final ArrayList<String> value;
     public SectionPair(String key, ArrayList<String> value){
         this.key=key;
         this.value=value;

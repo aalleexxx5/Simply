@@ -2,10 +2,11 @@ package ximias.dk.au.cs.fh.Components;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Joins a key and a value for a variable name and value
  */
 public class MemPair {
-    private String key;
-    private String value;
+    private final String key;
+    private final String value;
     public MemPair(String key, String value){
         this.key=key;
         this.value=value;

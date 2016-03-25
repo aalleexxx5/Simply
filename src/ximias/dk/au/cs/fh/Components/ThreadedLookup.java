@@ -6,11 +6,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 14/01/2016.
+ * Keeps track of all the things Lookup Can't when a new thread id running.
  */
 public class ThreadedLookup implements IFlowchange {
         private boolean flowChange = true;
-        private ArrayList<Command> commands = new ArrayList<Command>();
-        private Jumpto jumpto = new Jumpto(this);
+        private final ArrayList<Command> commands = new ArrayList<>();
+        private final Jumpto jumpto = new Jumpto(this);
         public ThreadedLookup(ArrayList<String> l){
             setCurrentLines(l);
             flowChange = true;
@@ -32,6 +33,7 @@ public class ThreadedLookup implements IFlowchange {
             commands.add(new TextColor());
             commands.add(new TextStyle());
             commands.add(new TextSize());
+            commands.add(new Execute());
         }
 
         public boolean run(String cmd, String[] args){

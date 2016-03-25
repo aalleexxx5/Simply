@@ -8,12 +8,23 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
+ * Command. mimics Goto. Goto is a reserved word in Java.
  */
 public class Jumpto extends Command {
     private ArrayList<String> lines;
-    IFlowchange lookup;
+    private final IFlowchange lookup;
     public Jumpto(IFlowchange lookup){
         this.lookup = lookup;
+    }
+
+    @Override
+    public String description() {
+        return "jumps to a section with the specified name.";
+    }
+
+    @Override
+    public String use(){
+        return "jumpto <destination>";
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 14/01/2016.
+ * Executes code in a separate thread. this is created by the Run command (and execute, but don't tell anyone)
  */
 public class ThreadedExechuter implements Runnable {
     private ArrayList<String> lines;
@@ -12,14 +13,14 @@ public class ThreadedExechuter implements Runnable {
     }
     @Override
     public void run() {
-        ThreadedLookup lookup = new ThreadedLookup(lines);
+        IFlowchange lookup = new ThreadedLookup(lines);
         int i = 1;
         Viewer.print("running Thread ");
         while (lookup.getFlowChange()) {
             lines = lookup.getCurrentLines();
             lookup.setFlowChange(false);
             for (String line : lines) {
-                ArrayList<String> arg = new ArrayList<String>();
+                ArrayList<String> arg = new ArrayList<>();
                 String cmd;
                 if (line.contains(" ")) {
                     cmd = line.substring(0, line.indexOf(" "));
