@@ -2,7 +2,6 @@ package ximias.dk.au.cs.fh.Commands;
 
 import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Lookup;
-import ximias.dk.au.cs.fh.Components.Viewer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,9 +25,9 @@ public class Button extends WindowElement {
     public Component getComponent() {
         if (super.component==null){
             JButton comp=new JButton();
-            comp.setText(super.getValue());
-            comp.setBounds(new Rectangle(super.getLocation(),super.getSize()));
-            if (!getSubroutineName().isEmpty()){
+            comp.setText(ArgManipulation.toHTML(getValue()));
+            comp.setBounds(new Rectangle(getLocation(),getSize()));
+            if (getSubroutineName()!=null){
                 comp.addActionListener(e -> {
                     Lookup.runMainCommand("run", new String[]{getSubroutineName()});
                 });
@@ -40,28 +39,14 @@ public class Button extends WindowElement {
 
     @Override
     public boolean execute(String[] args) {
-        if (args.length<4){
-            Viewer.print("Need at least 4 arguments");
-            return false;
-        }
-        for (int i =1;i<5;i++){
-            if(!ArgManipulation.isNumberAndPositive(args[i])){
-                Viewer.print("Button Location and size must be numbers and positive.");
-                return false;
-            }
-        }
-        if (Integer.valueOf(args[3])==0||Integer.valueOf(args[4])==0){
-            if (!Window.removeFromWindow(args[0])){
-                Viewer.print("A button with the given name does not exist, so it can't be removed");
-                return false;
-            }
-            return true;
-        }
+        int nameargs = performChecksGetNameargs(5,args);
+        if (nameargs==-1) return false;
+        if (nameargs==-2) return true;
         WindowElement element;
-        if (args.length>4) {
-            element = new Button().init(args[0], Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]),args[5]);
+        if (args.length>nameargs+4) {
+            element = new Button().init(getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs+1]), Integer.valueOf(args[nameargs+2]), Integer.valueOf(args[nameargs+3]),args[nameargs+4]);
         }else{
-            element = new Button().init(args[0], Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]),null);
+            element = new Button().init(getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs+1]), Integer.valueOf(args[nameargs+2]), Integer.valueOf(args[nameargs+3]),null);
         }
         Window.addToWindow(element);
         return true;

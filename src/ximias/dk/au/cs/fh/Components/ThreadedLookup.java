@@ -35,6 +35,9 @@ public class ThreadedLookup implements IFlowchange {
             commands.add(new TextSize());
             commands.add(new Execute());
             commands.add(new WindowSize());
+            commands.add(new Popup());
+            commands.add(new Window());
+            commands.add(new Button());
         }
 
         public boolean run(String cmd, String[] args){

@@ -8,7 +8,7 @@ import javax.swing.*;
  * Created by Alex on 26/03/2016.
  * Command. Opens a dialog box with configurable options.
  */
-public class Dialog extends Command {
+public class Dialog extends Command {//TODO: Implement this
 
     @Override
     public String use() {

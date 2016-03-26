@@ -42,6 +42,14 @@ public class Window extends Command
         windowElements.add(element);
         Viewer.updateElements(windowElements);
     }
+    public static WindowElement getFromList(String name){
+        for (WindowElement element:windowElements){
+            if (element.getValue().equals(name)){
+                return element;
+            }
+        }
+        return null;
+    }
     static boolean removeFromWindow(String name){
         for (WindowElement element:windowElements) {
             if (element.getValue().equalsIgnoreCase(name)){

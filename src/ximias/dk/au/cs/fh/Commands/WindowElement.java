@@ -1,6 +1,8 @@
 package ximias.dk.au.cs.fh.Commands;
 
 import com.sun.istack.internal.Nullable;
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
+import ximias.dk.au.cs.fh.Components.Viewer;
 
 import java.awt.*;
 
@@ -44,4 +46,32 @@ public abstract class WindowElement extends Command {
         return new Dimension(width,height);
     }
 
+    protected int performChecksGetNameargs(int minlength, String[] args) {
+        if (args.length < minlength) {
+            Viewer.print("Need at least " + minlength + " arguments");
+            return -1;
+        }
+        int nameargs = 0;
+        for (String arg : args) {
+            if (!ArgManipulation.isNumber(arg)) {
+                nameargs++;
+            } else break;
+        }
+        value = ArgManipulation.argsToString(0, nameargs, args);
+        for (int i = nameargs; i < nameargs + 4; i++) {
+            if (!ArgManipulation.isNumberAndPositive(args[i])) {
+                Viewer.print("Location and size must be numbers and positive.");
+                return -1;
+            }
+        }
+        if (Integer.valueOf(args[nameargs + 2]) == 0 || Integer.valueOf(args[nameargs + 3]) == 0) {
+            if (!Window.removeFromWindow(value)) {
+                Viewer.print("An element with the given name does not exist, so it can't be removed");
+                return -1;
+            }else{
+                return -2;
+            }
+        }
+        return nameargs;
+    }
 }

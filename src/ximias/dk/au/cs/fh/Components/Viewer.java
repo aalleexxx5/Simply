@@ -171,8 +171,9 @@ public class Viewer extends JFrame{
     }
 
     private static JFrame runtimeFrame;
+    private static int elementindex = 1;
     public static void updateElements(ArrayList<WindowElement> elements){
-        Component[] frameComps = runtimeFrame.getComponents();
+        Component[] frameComps = runtimeFrame.getLayeredPane().getComponents();
         for (WindowElement element:elements){
             Component comp = element.getComponent();
             boolean contains = false;
@@ -183,14 +184,12 @@ public class Viewer extends JFrame{
                 }
             }
             if (!contains){
-                runtimeFrame.add(comp);
+                runtimeFrame.getLayeredPane().add(comp,elementindex);
+                elementindex++;
             }
         }
         for (Component frameComp:frameComps){
-            boolean contains = frameComp.equals(runtimeFrame.getRootPane());
-            if (contains){
-                break;
-            }
+            boolean contains = frameComp.equals(runtimeFrame.getLayeredPane());
             for (WindowElement element:elements){
                 Component comp = element.getComponent();
                 if (frameComp.equals(comp)){
@@ -199,9 +198,11 @@ public class Viewer extends JFrame{
                 }
             }
             if (!contains){
-                runtimeFrame.remove(frameComp);
+                runtimeFrame.getLayeredPane().remove(frameComp);
+                elementindex--;
             }
         }
+        runtimeFrame.getLayeredPane().repaint();
     }
 
     public static void UpdateWindow(int x, int y, int width, int height, ArrayList<WindowElement> elements){
@@ -250,7 +251,7 @@ public class Viewer extends JFrame{
     }
 
     public static void setFont(String type ,int size){
-        if (type.isEmpty()){
+        if (type==null||type.isEmpty()){
             output.setFont(new Font(output.getFont().getName(),Font.PLAIN,size));
         }
         if (size<1){

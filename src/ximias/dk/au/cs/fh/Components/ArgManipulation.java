@@ -17,7 +17,7 @@ public class ArgManipulation {
 
     public static boolean isNumberAndPositive(String n){
         try {
-            return (Integer.valueOf(n) > 0);
+            return (Integer.valueOf(n) >= 0);
         }catch (NumberFormatException e){
             return false;
         }
@@ -35,5 +35,8 @@ public class ArgManipulation {
         }
         value = value.replaceAll(Constants.NEWLINE_SYMBOL, "\n");
         return value;
+    }
+    public static String toHTML(String text){
+        return "<html>"+text.replaceAll("\n","<br>")+"</html>";
     }
 }

@@ -1,7 +1,21 @@
 echo Window Example
-window 100 100 800 300
-button hello 100 100 100 100 a
+window 500 100 800 300
+button Press this button twice 100 100 200 100 a
+button useless button 302 100 200 30
+button almost useless button 302 132 200 30 pop
+label when the big button is pressed/newlinea new thread dies. 302 164 200 30 ffaaaa
+wait 2000
+button Press this new button twice 110 110 200 100
+
+set a 0
 subroutine a
-echo button was pressed!
+add a *a 1
+if *a > 2 endsubroutine
+if *a > 1 echo Hurray! you did what the button said! :D
 endsubroutine
 echo /WindowExample
+exit
+
+subroutine pop
+popup hello! information hello you!
+endsubroutine

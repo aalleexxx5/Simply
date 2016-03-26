@@ -46,6 +46,8 @@ public class Lookup implements IFlowchange{
         commands.add(new Dialog());
         commands.add(new Window());
         commands.add(new Button());
+        commands.add(new Label());
+        commands.add(new Pane());
         setCurrentLines(lines);
     }
 
