@@ -211,7 +211,7 @@ public class Viewer extends JFrame{
 
     public static void print(String line){
         System.out.println(line);
-        output.append("\n" + line);
+        output.append(line+"\n");
             output.setCaretPosition(output.getDocument().getLength());
     }
 

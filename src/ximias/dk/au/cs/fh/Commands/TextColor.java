@@ -1,6 +1,6 @@
 package ximias.dk.au.cs.fh.Commands;
 
-import ximias.dk.au.cs.fh.Components.Numbers;
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
@@ -21,7 +21,7 @@ public class TextColor extends Command {
     @Override
     public boolean execute(String[] args) {
         if(args.length>0) {
-            if (Numbers.isNumber(args[0])) {
+            if (ArgManipulation.isNumber(args[0])) {
                 Viewer.setTextColour(Integer.valueOf(args[0]));
                 return true;
             }else {

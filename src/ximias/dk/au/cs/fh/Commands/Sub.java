@@ -19,7 +19,7 @@ public class Sub extends Command{
     @Override
     public boolean execute(String[] args) { //Add var num ... num OR Add num .. num
         args = Mem.getValuesInArgs(args);
-        if(Numbers.isNumber(args[0])){ //option 2
+        if(ArgManipulation.isNumber(args[0])){ //option 2
             int ans = Integer.valueOf(args[0]);
             try {
                 for (int i = 1; i < args.length; i++) {

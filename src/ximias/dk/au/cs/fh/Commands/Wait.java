@@ -1,7 +1,7 @@
 package ximias.dk.au.cs.fh.Commands;
 
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Mem;
-import ximias.dk.au.cs.fh.Components.Numbers;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
@@ -22,7 +22,7 @@ public class Wait extends Command {
     @Override
     public boolean execute(String[] args) {
         args = Mem.getValuesInArgs(args);
-        if (Numbers.isNumberAndPositive(args[0])) {
+        if (ArgManipulation.isNumberAndPositive(args[0])) {
             try {
                 Thread.sleep(Integer.valueOf(args[0]));
             } catch (InterruptedException ignored) {}

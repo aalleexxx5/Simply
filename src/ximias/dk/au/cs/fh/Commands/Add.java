@@ -20,7 +20,7 @@ public class Add extends Command{
     @Override
     public boolean execute(String[] args) { //Add var num ... num OR Add num .. num
         args = Mem.getValuesInArgs(args);
-        if(Numbers.isNumber(args[0])){ //option 2
+        if(ArgManipulation.isNumber(args[0])){ //option 2
             int ans = 0;
             try {
                 for (String num : args) {

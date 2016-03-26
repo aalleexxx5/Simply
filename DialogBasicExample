@@ -1,0 +1,8 @@
+echo Basic dialog example
+popup popup window plain I'm a plain popup window
+popup popup window error I'm an error
+popup popup window information I have information for you
+popup popup window question I am questioning something
+popup popup window warning I am warning you of something
+popup multiline popup window plain Hey look! /newline _ This box has/newlinemultiple lines!
+dialog hello!

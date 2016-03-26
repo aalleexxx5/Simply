@@ -35,7 +35,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                     return event(3,true);
                 return event(3,false);
             case ">":
-                if(Numbers.isNumber(args[0])&&Numbers.isNumber(args[2])){
+                if(ArgManipulation.isNumber(args[0])&& ArgManipulation.isNumber(args[2])){
                     if(Integer.valueOf(args[0])>Integer.valueOf(args[2]))
                         return event(3,true);
                     return event(3,false);
@@ -44,7 +44,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                     return false;
                 }
             case "<":
-                if(Numbers.isNumber(args[0])&&Numbers.isNumber(args[2])){
+                if(ArgManipulation.isNumber(args[0])&& ArgManipulation.isNumber(args[2])){
                     if(Integer.valueOf(args[0])<Integer.valueOf(args[2]))
                         return event(3,true);
                     return event(2,false);
@@ -54,7 +54,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 }
             case ">=":
             case "=>":
-                if(Numbers.isNumber(args[0])&&Numbers.isNumber(args[2])){
+                if(ArgManipulation.isNumber(args[0])&& ArgManipulation.isNumber(args[2])){
                     if(Integer.valueOf(args[0])>=Integer.valueOf(args[2]))
                         return event(3,true);
                     return event(3,false);
@@ -64,7 +64,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 }
             case "<=":
             case "=<":
-                if(Numbers.isNumber(args[0])&&Numbers.isNumber(args[2])){
+                if(ArgManipulation.isNumber(args[0])&& ArgManipulation.isNumber(args[2])){
                     if(Integer.valueOf(args[0])<=Integer.valueOf(args[2]))
                         return event(3,true);
                     return event(3,false);
@@ -76,7 +76,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
             case "Number":
             case "num":
             case "Num":
-                if (Numbers.isNumber(args[0]))
+                if (ArgManipulation.isNumber(args[0]))
                     return event(2, true);
                 return event(2, false);
             case "contains":

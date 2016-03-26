@@ -1,6 +1,6 @@
 package ximias.dk.au.cs.fh.Commands;
 
-import ximias.dk.au.cs.fh.Components.Numbers;
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
@@ -20,7 +20,7 @@ public class WindowSize extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        if (Numbers.isNumberAndPositive(args[0])&&Numbers.isNumberAndPositive(args[1])){
+        if (ArgManipulation.isNumberAndPositive(args[0])&& ArgManipulation.isNumberAndPositive(args[1])){
             Viewer.resizeApp(Integer.valueOf(args[0]),Integer.valueOf(args[1]));
             return true;
         }else if(args[0].equalsIgnoreCase("small")){

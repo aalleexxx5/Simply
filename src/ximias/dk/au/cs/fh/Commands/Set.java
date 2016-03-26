@@ -24,16 +24,7 @@ public class Set extends Command {
             return false;
         }
         args = Mem.getValuesInArgs(args);
-        String value = "";
-        for(int i = 1; i<args.length;i++){
-            args[i] = args[i].replace(Constants.ESCAPE_STAR,"*");
-            if(i+1>=args.length||args[i+1].contains(Constants.NO_SPACE_SYMBOL)){
-                value+=args[i];
-                i++;
-            }else{
-                value+=args[i]+" ";
-            }
-        }
+        String value = ArgManipulation.argsToString(1,args.length,args);
         Lookup.getMemInstance().add(new MemPair(args[0], value));
         return true;
     }

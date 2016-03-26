@@ -1,6 +1,6 @@
 package ximias.dk.au.cs.fh.Commands;
 
-import ximias.dk.au.cs.fh.Components.Numbers;
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
@@ -20,7 +20,7 @@ public class TextSize extends Command{
 
     @Override
     public boolean execute(String[] args) {
-        if(Numbers.isNumber(args[0])){
+        if(ArgManipulation.isNumber(args[0])){
             Viewer.setFont(null,Integer.valueOf(args[0]));
             return true;
         }

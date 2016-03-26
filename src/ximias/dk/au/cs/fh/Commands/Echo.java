@@ -1,5 +1,6 @@
 package ximias.dk.au.cs.fh.Commands;
 
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Constants;
 import ximias.dk.au.cs.fh.Components.Mem;
 import ximias.dk.au.cs.fh.Components.Viewer;
@@ -16,22 +17,13 @@ public class Echo extends Command {
 
     @Override
     public String use(){
-        return "echo <arg1> (optional) <arg2> ... <argn>\n To write '*' use "+Constants.ESCAPE_STAR;
+        return "echo <Word> (optional) <Word> ... <Word>\n To write '*' use "+Constants.ESCAPE_STAR;
     }
 
     @Override
     public boolean execute(String[] args) {
-        String print = "";
         args = Mem.getValuesInArgs(args);
-        for (int i=0; i<args.length;i++){
-            args[i] = args[i].replace(Constants.ESCAPE_STAR,"*");
-            if (i+1>=args.length||args[i+1].contains(Constants.NO_SPACE_SYMBOL)){
-                print = print + args[i];
-                i++;
-            }else{
-                print =print + args[i] + " ";
-            }
-        }
+        String print = ArgManipulation.argsToString(0,args.length,args);
         Viewer.print(print);
         return true;
     }

@@ -1,7 +1,8 @@
-echo hello does this contain spaces?
+echo Echo Example
 set a 10
-echo what about this, does a still say *a
+echo Does variable a say *a
 echo good, can I then add an ! directly after *a _ !
+echo Nice! what about/newlineadding lines? _ /newline _ is that possible?
 
 set a now let's see
 set b if everything works with set as well

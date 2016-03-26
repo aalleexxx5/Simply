@@ -20,7 +20,7 @@ public class Div extends Command {
     public boolean execute(String[] args) {
         args = Mem.getValuesInArgs(args);
         try {
-            if (Numbers.isNumber(args[0])) {
+            if (ArgManipulation.isNumber(args[0])) {
                 int ans = Integer.valueOf(args[0]) / Integer.valueOf(args[1]);
                 if (args.length > 2) {
                     for (int i = 2; i < args.length; i++) {
