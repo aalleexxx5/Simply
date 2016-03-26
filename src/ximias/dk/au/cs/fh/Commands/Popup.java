@@ -8,6 +8,7 @@ import javax.swing.*;
 
 /**
  * Created by Alex on 25/03/2016.
+ * Command. Displays a message in a popup. Allows specification of message type.
  */
 public class Popup extends Command {
     @Override

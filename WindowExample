@@ -1,8 +1,7 @@
-echo Window example
-windowsize 500 500
-wait 1500
-windowsize small
-wait 1500
-windowsize medium
-wait 1500
-windowsize large
+echo Window Example
+window 100 100 800 300
+button hello 100 100 100 100 a
+subroutine a
+echo button was pressed!
+endsubroutine
+echo /WindowExample

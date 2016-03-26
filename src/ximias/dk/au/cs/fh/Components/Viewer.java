@@ -1,6 +1,7 @@
 package ximias.dk.au.cs.fh.Components;
 
 import ximias.dk.au.cs.fh.Commands.Run;
+import ximias.dk.au.cs.fh.Commands.WindowElement;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -8,6 +9,7 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -168,7 +170,61 @@ public class Viewer extends JFrame{
         commandFrame.pack();
     }
 
+    private static JFrame runtimeFrame;
+    public static void updateElements(ArrayList<WindowElement> elements){
+        Component[] frameComps = runtimeFrame.getComponents();
+        for (WindowElement element:elements){
+            Component comp = element.getComponent();
+            boolean contains = false;
+            for (Component frameComp:frameComps){
+                if (frameComp.equals(comp)){
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains){
+                runtimeFrame.add(comp);
+            }
+        }
+        for (Component frameComp:frameComps){
+            boolean contains = frameComp.equals(runtimeFrame.getRootPane());
+            if (contains){
+                break;
+            }
+            for (WindowElement element:elements){
+                Component comp = element.getComponent();
+                if (frameComp.equals(comp)){
+                    contains=true;
+                    break;
+                }
+            }
+            if (!contains){
+                runtimeFrame.remove(frameComp);
+            }
+        }
+    }
+
+    public static void UpdateWindow(int x, int y, int width, int height, ArrayList<WindowElement> elements){
+        if (runtimeFrame==null) {
+            runtimeFrame = new JFrame();
+            runtimeFrame.setLayout(null);
+            runtimeFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            runtimeFrame.addWindowListener(new WindowAdapter(){
+                public void windowClosing(WindowEvent winEvt) {
+                    runtimeFrame.setVisible(false);
+                    doneExecution();
+                }
+            });
+        }
+        runtimeFrame.setBounds(x,y,width,height);
+        runtimeFrame.setVisible((width!=0&&height!=0));
+        updateElements(elements);
+    }
+
     public static void doneExecution(){
+        if (runtimeFrame==null||runtimeFrame.isVisible()){
+            return;
+        }
         if (Run.isDone()&&!exeThread.isAlive())
             runButton.setEnabled(true);
         else if(exeThread.equals(Thread.currentThread())&&Run.noThreads()){
