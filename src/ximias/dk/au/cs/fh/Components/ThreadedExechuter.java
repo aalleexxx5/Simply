@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class ThreadedExechuter implements Runnable {
     private ArrayList<String> lines;
-    private String subsectionName;
+    private final String subsectionName;
     public ThreadedExechuter(ArrayList<String> lines,String section){
         this.lines = lines;
         this.subsectionName = section;

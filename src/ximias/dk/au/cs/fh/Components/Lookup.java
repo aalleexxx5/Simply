@@ -3,7 +3,6 @@ package ximias.dk.au.cs.fh.Components;
 import ximias.dk.au.cs.fh.Commands.*;
 
 import java.util.ArrayList;
-import java.util.StringJoiner;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -50,6 +49,8 @@ public class Lookup implements IFlowchange{
         commands.add(new Label());
         commands.add(new Pane());
         commands.add(new Random());
+        commands.add(new Keyboard());
+        commands.add(new Image());
     }
 
     public boolean run(String cmd, String[] args){

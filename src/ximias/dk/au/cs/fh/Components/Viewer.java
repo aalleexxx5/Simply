@@ -7,10 +7,9 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -203,6 +202,13 @@ public class Viewer extends JFrame{
         }
         runtimeFrame.setBounds(x,y,width,height);
         runtimeFrame.setVisible((width!=0&&height!=0));
+    }
+    public static void addKeyboard(KeyListener listener){
+        runtimeFrame.addKeyListener(listener);
+    }
+
+    public static void removeKeyboard(KeyListener l) {
+        runtimeFrame.removeKeyListener(l);
     }
 
     public static void doneExecution(){

@@ -52,7 +52,7 @@ public class Window extends Command
             updateLock.unlock();
         }
     }
-    public static boolean contains(String value){
+    private static boolean contains(String value){
         for (ComponentPair element:windowElements){
             if (element.getValue().equals(value)){
                 return true;
@@ -62,7 +62,7 @@ public class Window extends Command
     }
 
 
-    public static ComponentPair getFromList(String name){
+    private static ComponentPair getFromList(String name){
         for (ComponentPair element:windowElements){
             if (element.getValue().equals(name)){
                 return element;
@@ -85,8 +85,8 @@ public class Window extends Command
     }
 }
 class ComponentPair{
-    private Component comp;
-    private String value;
+    private final Component comp;
+    private final String value;
     ComponentPair(String value, Component comp){
         this.comp=comp;
         this.value=value;
@@ -97,7 +97,7 @@ class ComponentPair{
     public void setBounds(Rectangle rectangle){
         comp.setBounds(rectangle);
     }
-    protected void setBackground(Color color){
+    void setBackground(Color color){
         comp.setBackground(color);
     }
 

@@ -1,7 +1,6 @@
 package ximias.dk.au.cs.fh.Components;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**

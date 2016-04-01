@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * Command. For creating JPanes with elements inside. for those who don't think windows are hard enough
  */
 public class Pane extends WindowElement {//TODO: add elements to this
-    private static ArrayList<WindowElement> windowElements=new ArrayList<>();
+    private static final ArrayList<WindowElement> windowElements=new ArrayList<>();
     Color color;
-    String[] components;
-    int nameargs;
+    private String[] components;
+
     @Override
     public String use() {
         return "pane <name> <locationX> <locationY> <width> <height> (optional) <element> ... <elenemt>";
@@ -21,12 +21,6 @@ public class Pane extends WindowElement {//TODO: add elements to this
     @Override
     public String description() {
         return "create a pane to contain elements or colours. This way elements can be moved as a group";
-    }
-
-    WindowElement init(String value, int x, int y, int width, int height, Color color, int nameargs,String[] components){
-        this.components = components;
-        this.nameargs=nameargs;
-        return super.init(value,x,y,width,height,Color.black,null);
     }
 
     @Override
@@ -56,7 +50,7 @@ public class Pane extends WindowElement {//TODO: add elements to this
         int nameargs = performChecksGetNameargs(5,args);
         if (nameargs==-1) return false;
         if (nameargs==-2) return true;
-        Window.addToWindow(new Pane().init(getValue(),Integer.valueOf(args[nameargs]),Integer.valueOf(args[nameargs+1]),Integer.valueOf(args[nameargs+2]),Integer.valueOf(args[nameargs+3]),new Color(Integer.valueOf(args[nameargs+4],16)),nameargs,new String[] {}));
+//        Window.addToWindow(new Pane().init(getValue(),Integer.valueOf(args[nameargs]),Integer.valueOf(args[nameargs+1]),Integer.valueOf(args[nameargs+2]),Integer.valueOf(args[nameargs+3]),new Color(Integer.valueOf(args[nameargs+4],16)),nameargs,new String[] {}));
         return true;
     }
 }

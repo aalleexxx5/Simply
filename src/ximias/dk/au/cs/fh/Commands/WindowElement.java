@@ -10,38 +10,31 @@ import java.awt.*;
  * Created by Alex on 26/03/2016.
  * Abstraction for all window elements
  */
-public abstract class WindowElement extends Command {
+abstract class WindowElement extends Command {
     private int locX, locY, width, height;
-    private String value, subroutineName;
+    private String value;
+    private Object extra;
     private Color background;
-    protected Component component;
+    Component component;
     public abstract Component getComponent();
 
-    WindowElement init(String value, int x, int y, int width, int height,Color background, @Nullable String subroutineName){
+    WindowElement init(String value, int x, int y, int width, int height,Color background, @Nullable Object extra){
         this.value = value;
         this.locX = x;
         this.locY = y;
         this.width=width;
         this.height=height;
-        this.subroutineName=subroutineName;
+        this.extra=extra;
         this.background=background;
         return this;
-    }
-    void setLocation(int x, int y){
-        this.locX = x;
-        this.locY = y;
     }
 
     public Color getBackground() {
         return background;
     }
 
-    void setSize(int x, int y){
-        this.width=x;
-        this.height=y;
-    }
-    public String getSubroutineName(){
-        return subroutineName;
+    public Object getExtra() {
+        return extra;
     }
     public String getValue(){
         return value;
@@ -53,7 +46,7 @@ public abstract class WindowElement extends Command {
         return new Dimension(width,height);
     }
 
-    protected int performChecksGetNameargs(int minlength, String[] args) {
+    int performChecksGetNameargs(int minlength, String[] args) {
         if (args.length < minlength) {
             Viewer.print("Need at least " + minlength + " arguments");
             return -1;

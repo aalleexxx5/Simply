@@ -1,6 +1,8 @@
 echo minigame test
 set Spike s
 window 100 100 1000 900
+keyboard L down Left moveLeft
+keyboard R down Right moveRight
 button L 420 760 80 80 moveLeft
 button R 502 760 80 80 moveRight
 set x 485
@@ -33,11 +35,13 @@ if *spk <= *spikeMax jumpto moreSpikes
 run gameTick
 
 subroutine moveLeft
+if *x < 20 exit
 sub x *x 20
 label ball *x *y 30 30 ffff00
 endsubroutine
 
 subroutine moveRight
+if *x > 940 exit
 add x *x 20
 label ball *x *y 30 30 ffff00
 endsubroutine

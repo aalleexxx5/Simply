@@ -27,10 +27,8 @@ public class Button extends WindowElement {
             JButton comp=new JButton();
             comp.setText(ArgManipulation.toHTML(getValue()));
             comp.setBounds(new Rectangle(getLocation(),getSize()));
-            if (getSubroutineName()!=null){
-                comp.addActionListener(e -> {
-                    Lookup.runMainCommand("run", new String[]{getSubroutineName()});
-                });
+            if (getExtra()!=null){
+                comp.addActionListener(e -> Lookup.runMainCommand("run", new String[]{String.valueOf(getExtra())}));
             }
             super.component=comp;
         }

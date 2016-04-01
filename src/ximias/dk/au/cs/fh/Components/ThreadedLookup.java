@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Keeps track of all the things Lookup Can't when a new thread id running.
  */
 public class ThreadedLookup implements IFlowchange {
-    String lastJump;
+    private String lastJump;
     private boolean flowChange = true;
     private final ArrayList<Command> commands = new ArrayList<>();
     private final Jumpto jumpto = new Jumpto(this);
@@ -42,6 +42,7 @@ public class ThreadedLookup implements IFlowchange {
         commands.add(new Button());
         commands.add(new Label());
         commands.add(new Random());
+        commands.add(new Keyboard());
     }
 
     public boolean run(String cmd, String[] args) {
