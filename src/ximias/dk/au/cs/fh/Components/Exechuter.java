@@ -48,7 +48,11 @@ class Exechuter implements Runnable{
                             break;
                         }
                     } else {
-                        Viewer.print("An error occurred in line " + i + " :" + cmd);
+                        if (lookup.getLastJump() == null) {
+                            Viewer.print("An error occurred in line " + i + " :" + cmd);
+                        }else {
+                            Viewer.print("An error occurred in section " + lookup.getLastJump() + "line " + i + " :" + cmd);
+                        }
                         break;
                     }
                 }

@@ -3,7 +3,9 @@ package ximias.dk.au.cs.fh.Commands;
 import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -12,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Window extends Command
 {
-    private static ArrayList<WindowElement> windowElements=new ArrayList<>();
+    private static ArrayList<ComponentPair> windowElements=new ArrayList<>();
     @Override
     public String use() {
         return "window <locationX> <locationY> <width> <height> \nTo close the window, use 0 as width or height";
@@ -30,40 +32,76 @@ public class Window extends Command
                 return false;
             }
         }
-        Viewer.UpdateWindow(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]),Integer.valueOf(args[3]),windowElements);
+        Viewer.UpdateWindow(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]),Integer.valueOf(args[3]));
         return true;
     }
     private static final ReentrantLock updateLock = new ReentrantLock();
     public static void addToWindow(WindowElement element){
         updateLock.lock();
         try {
-            for (WindowElement elementInList : windowElements) {
-                if (elementInList.getValue().equals(element.name())) {
-                    windowElements.remove(elementInList);
-                    break;
-                }
+            if (!contains(element.getValue())){
+                ComponentPair component =new ComponentPair(element.getValue(),element.getComponent());
+                Viewer.addElement(component.getComp());
+                windowElements.add(component);
+            }else{
+                ComponentPair com = getFromList(element.getValue());
+                com.setBackground(element.getBackground());
+                getFromList(element.getValue()).setBounds(new Rectangle(element.getLocation(),element.getSize()));
             }
-            windowElements.add(element);
-            Viewer.updateElements(windowElements);
         }finally {
             updateLock.unlock();
         }
     }
-    public static WindowElement getFromList(String name){
-        for (WindowElement element:windowElements){
+    public static boolean contains(String value){
+        for (ComponentPair element:windowElements){
+            if (element.getValue().equals(value)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static ComponentPair getFromList(String name){
+        for (ComponentPair element:windowElements){
             if (element.getValue().equals(name)){
                 return element;
             }
         }
-        return null;
+        throw new NoSuchElementException("Component did not exist in list");
     }
     static boolean removeFromWindow(String name){
-        for (WindowElement element:windowElements) {
-            if (element.getValue().equalsIgnoreCase(name)){
+        for (ComponentPair element:windowElements) {
+            if (element.getValue().equals(name)){
+                Viewer.removeElement(element.getComp());
                 windowElements.remove(element);
                 return true;
             }
         }
         return false;
+    }
+    public static void removeAll(){
+        windowElements = new ArrayList<>();
+    }
+}
+class ComponentPair{
+    private Component comp;
+    private String value;
+    ComponentPair(String value, Component comp){
+        this.comp=comp;
+        this.value=value;
+    }
+    public Component getComp() {
+        return comp;
+    }
+    public void setBounds(Rectangle rectangle){
+        comp.setBounds(rectangle);
+    }
+    protected void setBackground(Color color){
+        comp.setBackground(color);
+    }
+
+    public String getValue() {
+        return value;
     }
 }

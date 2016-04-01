@@ -21,7 +21,7 @@ public class Exit extends Command {
 
     @Override
     public String description() {
-        return "stops the program. If there are multiple subroutines running, only stops a single subroutine (use endsubroutine for easier to read code)";
+        return "stops the program. If there are multiple subroutines running, only stops a single subroutine ";
     }
 
     @Override

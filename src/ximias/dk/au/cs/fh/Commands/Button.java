@@ -44,9 +44,9 @@ public class Button extends WindowElement {
         if (nameargs==-2) return true;
         WindowElement element;
         if (args.length>nameargs+4) {
-            element = new Button().init(getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs+1]), Integer.valueOf(args[nameargs+2]), Integer.valueOf(args[nameargs+3]),args[nameargs+4]);
+            element = new Button().init(getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs+1]), Integer.valueOf(args[nameargs+2]), Integer.valueOf(args[nameargs+3]),null,args[nameargs+4]);
         }else{
-            element = new Button().init(getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs+1]), Integer.valueOf(args[nameargs+2]), Integer.valueOf(args[nameargs+3]),null);
+            element = new Button().init(getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs+1]), Integer.valueOf(args[nameargs+2]), Integer.valueOf(args[nameargs+3]),null,null);
         }
         Window.addToWindow(element);
         return true;

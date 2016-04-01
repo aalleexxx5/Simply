@@ -1,34 +1,170 @@
 echo minigame test
+set Spike s
 window 100 100 1000 900
 button L 420 760 80 80 moveLeft
 button R 502 760 80 80 moveRight
-set x 470
-label ball 470 470 30 30 ffff00
-set spikeX 500
-set spikeY 10
-run addSpike
+set x 485
+set y 670
+label ball *y 670 30 30 ffff00
+set spikeList & _ starSpike
+set colFactor 51
+set spikeWidth 20
+set spikeHeight 60
+set spawnEnd 969
+set spikeMax 50
+set falldelay 8
+set falldist 1
+set spikeColStage 1
+set spikeR 255
+set spikeG 000
+set spikeB 000
+set round 1
+set spikeCol *spikeR _ *spikeG _ *spikeB
+
+set spk 0
+section moreSpikes
+set spikeNum *spk
+random spikeX 1 *spawnEnd
+random spikeY 1 300
+add spk *spk 1
+execute addSpike
+if *spk <= *spikeMax jumpto moreSpikes
+
+run gameTick
 
 subroutine moveLeft
 sub x *x 20
-label ball *x 470 30 30 ffff00
+label ball *x *y 30 30 ffff00
 endsubroutine
-
 
 subroutine moveRight
 add x *x 20
-label ball *x 470 30 30 ffff00
+label ball *x *y 30 30 ffff00
 endsubroutine
 
 subroutine addSpike
-label spike *spikeX *spikeY 10 20 ff0000
-set c 0
+set i *spikeNum
+set spike spike
+
+section createList
+if *i =< 0 jumpto endList
+set spike spike _ *spike
+sub i *i 1
+jumpto createList
+
+section endList
+set spikeX*spike *spikeX
+set spikeY*spike *spikeY
+set spikename S _ *spikeNum
+label *spikename *spikeX*spike *spikeY*spike *spikeWidth *spikeHeight *spikeCol
+endsubroutine
+
+subroutine gameTick
 section fall
-label spike *spikeX *spikeY 30 50 *c
-add c *c 20
-add spikeY *spikeY 1
-wait 5
-if *c > 16777200 set c 0
-if *spikeY < 900 jumpto fall
-set spikeY 10
+set i *spikeNum
+set spike spike
+
+section nextSpike
+set spikeName S _ *i
+add spikeY*spike *spikeY*spike *falldist
+if *spikeY*spike >= 900 jumpto resetSpike
+label *spikeName *spikeX*spike *spikeY*spike *spikeWidth *spikeHeight *spikeCol
+
+add blCorner *spikeY*spike *spikeHeight
+if *blCorner < *y jumpto noCollide
+if *spikeY*spike > *y jumpto noCollide
+if *spikeX*spike > *x jumpto noCollide
+add trCorner *spikeX*spike *spikeWidth
+if *trCorner < *x jumpto noCollide
+button L 1 1 0 0
+button R 1 1 0 0
+label ball 1 1 0 0 000000
+label dead 1 1 1000 900 ff0000
+echo user died
+wait 1000
+window 100 100 0 0
+exit
+section noCollide
+if *i =< 0 jumpto updateDone
+set spike spike _ *spike
+sub i *i 1
+jumpto nextSpike
+
+section resetSpike
+add round *round 1
+if *round > *spikeMax execute nextRound
+random spikeY*spike 1 300
+random spikeX*spike 1 *spawnEnd
+jumpto nextSpike
+
+section updateDone
+if *falldelay <= 2 jumpto Dist
+wait *falldelay
 jumpto fall
+
+section Dist
+wait 2
+jumpto fall
+endsubroutine
+
+subroutine nextRound
+if *falldelay <= 2 jumpto incDist
+sub falldelay *falldelay 1
+jumpto nextColor
+
+section incDist
+add falldist *falldist 1
+set falldelay 8
+section nextColor
+set round 1
+jumpto c*spikeColStage
+section c1
+if *spikeG = 255 jumpto cinc
+add spikeG *spikeG *colFactor
+jumpto cend
+
+section c2
+if *spikeR = 000 jumpto cinc
+sub spikeR *spikeR *colFactor
+jumpto cend
+
+section c3
+if *spikeB = 255 jumpto cinc
+add spikeB *spikeB *colFactor
+jumpto cend
+
+section c4
+if *spikeG = 000 jumpto cinc
+sub spikeG *spikeG *colFactor
+jumpto cend
+
+section c5
+if *spikeR = 255 jumpto cinc
+add spikeR *spikeR *colFactor
+jumpto cend
+
+section c6
+if *spikeB = 000 jumpto cinc
+sub spikeB *spikeB *colFactor
+jumpto cend
+
+section cinc
+add spikeColStage *spikeColStage 1
+if *spikeColStage = 7 set spikeColStage 1
+
+section cend
+section cr
+if *spikeR = 000 jumpto cg
+if *spikeR < 100 set spikeR 0 _ *spikeR
+if *spikeR < 10 set spikeR 0 _ *spikeR
+section cg
+if *spikeG = 000 jumpto cb
+if *spikeG < 100 set spikeG 0 _ *spikeG
+if *spikeG < 10 set spikeG 0 _ *spikeG
+section cb
+if *spikeB = 000 jumpto cfinal
+if *spikeB < 100 set spikeB 0 _ *spikeB
+if *spikeB < 10 set spikeB 0 _ *spikeB
+section cfinal
+set spikeCol *spikeR _ *spikeG _ *spikeB
 endsubroutine

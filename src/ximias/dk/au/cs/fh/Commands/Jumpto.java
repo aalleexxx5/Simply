@@ -2,6 +2,7 @@ package ximias.dk.au.cs.fh.Commands;
 
 import ximias.dk.au.cs.fh.Components.IFlowchange;
 import ximias.dk.au.cs.fh.Components.Lookup;
+import ximias.dk.au.cs.fh.Components.Mem;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 import java.util.ArrayList;
@@ -29,8 +30,10 @@ public class Jumpto extends Command {
 
     @Override
     public boolean execute(String[] args) {
+        args = Mem.getValuesInArgs(args);
         if (Lookup.getSection().contains(args[0])){
             lookup.setCurrentLines(Lookup.getSection().getLinesAt(args[0]));
+            lookup.setLastJump(args[0]);
             lookup.setFlowChange(true);
             return true;
         }else{

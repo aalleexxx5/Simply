@@ -10,9 +10,9 @@ import java.awt.*;
 
 /**
  * Created by Alex on 26/03/2016.
+ * Command. Adds a label to the window
  */
 public class Label extends WindowElement {
-    private Color color;
     @Override
     public String use() {
         return "label <text> <locationX> <locationY> <width> <height> (optional) colour";
@@ -27,19 +27,12 @@ public class Label extends WindowElement {
     public Component getComponent() {
         if (component==null){
             JLabel comp = new JLabel(ArgManipulation.toHTML(getValue()));
-            if (color!=null) {
-                comp.setBackground(color);
-                comp.setOpaque(true);
-            }
+            comp.setBackground(getBackground());
+            comp.setOpaque(true);
             comp.setBounds(new Rectangle(getLocation(),getSize()));
             component=comp;
         }
         return component;
-    }
-
-    WindowElement init(String value, int x, int y, int width, int height, @Nullable String subroutineName,Color color) {
-        this.color = color;
-        return super.init(value, x, y, width, height, subroutineName);
     }
 
     @Override
@@ -49,16 +42,20 @@ public class Label extends WindowElement {
         if (nameargs==-1) return false;
         if (nameargs==-2) return true;
         if (args.length>nameargs+4){
-            int col;
-            try {
-                col=Integer.valueOf(args[nameargs+4],16);
-            }catch (NumberFormatException e){
-                Viewer.print("Color was not propper hexadecimal");
-                return false;
+            Color col;
+            if (args[nameargs+4].length()==9&&ArgManipulation.isNumber(args[nameargs]+4)){
+                col = new Color(Integer.valueOf(args[nameargs + 4].substring(0,3)),Integer.valueOf(args[nameargs + 4].substring(3,6)),Integer.valueOf(args[nameargs + 4].substring(6)));
+            }else {
+                try {
+                    col = new Color(Integer.valueOf(args[nameargs + 4], 16));
+                } catch (NumberFormatException e) {
+                    Viewer.print("Color "+args[nameargs+4]+" was not proper hexadecimal");
+                    return false;
+                }
             }
-            Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]), null,new Color(col)));
+            Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),col ,null));
         }else {
-            Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]), null));
+            Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),Color.white, null));
         }
         return true;
     }

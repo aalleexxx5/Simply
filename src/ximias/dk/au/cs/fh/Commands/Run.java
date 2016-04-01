@@ -33,7 +33,7 @@ public class Run extends Command {
             Viewer.print("Subroutine needs an argument");
         }
         if (Lookup.getSubroutine().contains(args[0])){
-            threads.add(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]))));
+            threads.add(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0])));
             threads.get(threads.size()-1).start();
             return true;
         }

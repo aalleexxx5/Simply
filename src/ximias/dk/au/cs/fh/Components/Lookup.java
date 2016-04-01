@@ -3,12 +3,14 @@ package ximias.dk.au.cs.fh.Components;
 import ximias.dk.au.cs.fh.Commands.*;
 
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 /**
  * Created by Alex on 05/01/2016.
  * Keeps track of everything. EVERYTHING! (except symbols, that is Constants's job)
  */
 public class Lookup implements IFlowchange{
+    private String lastJump;
     private static ArrayList<String> lines;
     private static final Mem memInstance = new Mem();
     private static Section section;
@@ -17,7 +19,6 @@ public class Lookup implements IFlowchange{
     private boolean flowChange = true;
     private final Jumpto jumpto = new Jumpto(this);
     public Lookup(ArrayList<String> l){
-        flowChange = true;
         lines = l;
         section = new Section(l);
         subroutine = new Subroutine(l);
@@ -48,7 +49,7 @@ public class Lookup implements IFlowchange{
         commands.add(new Button());
         commands.add(new Label());
         commands.add(new Pane());
-        setCurrentLines(lines);
+        commands.add(new Random());
     }
 
     public boolean run(String cmd, String[] args){
@@ -82,6 +83,16 @@ public class Lookup implements IFlowchange{
             }
         }
         return false;
+    }
+
+    @Override
+    public String getLastJump() {
+        return lastJump;
+    }
+
+    @Override
+    public void setLastJump(String lastJump) {
+        this.lastJump = lastJump;
     }
 
     public static int getNumCommands(){

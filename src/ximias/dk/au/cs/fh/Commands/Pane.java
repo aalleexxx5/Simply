@@ -26,7 +26,7 @@ public class Pane extends WindowElement {//TODO: add elements to this
     WindowElement init(String value, int x, int y, int width, int height, Color color, int nameargs,String[] components){
         this.components = components;
         this.nameargs=nameargs;
-        return super.init(value,x,y,width,height,null);
+        return super.init(value,x,y,width,height,Color.black,null);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Pane extends WindowElement {//TODO: add elements to this
             return component;
         }
         for (String component:components){
-            windowElements.add(Window.getFromList(component));
+            //windowElements.add(Window.getFromList(component));
             Window.removeFromWindow(component);
         }
         for (WindowElement element: windowElements){

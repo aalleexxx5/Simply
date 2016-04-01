@@ -13,22 +13,29 @@ import java.awt.*;
 public abstract class WindowElement extends Command {
     private int locX, locY, width, height;
     private String value, subroutineName;
+    private Color background;
     protected Component component;
     public abstract Component getComponent();
 
-    WindowElement init(String value, int x, int y, int width, int height, @Nullable String subroutineName){
+    WindowElement init(String value, int x, int y, int width, int height,Color background, @Nullable String subroutineName){
         this.value = value;
         this.locX = x;
         this.locY = y;
         this.width=width;
         this.height=height;
         this.subroutineName=subroutineName;
+        this.background=background;
         return this;
     }
     void setLocation(int x, int y){
         this.locX = x;
         this.locY = y;
     }
+
+    public Color getBackground() {
+        return background;
+    }
+
     void setSize(int x, int y){
         this.width=x;
         this.height=y;
@@ -36,7 +43,7 @@ public abstract class WindowElement extends Command {
     public String getSubroutineName(){
         return subroutineName;
     }
-    String getValue(){
+    public String getValue(){
         return value;
     }
     public Point getLocation(){

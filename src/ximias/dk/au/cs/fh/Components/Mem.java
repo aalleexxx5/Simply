@@ -1,6 +1,7 @@
 package ximias.dk.au.cs.fh.Components;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -8,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Keeps track of the variables used.
  */
 public class Mem {
-    private final ArrayList<MemPair> memory = new ArrayList<>();
+    private ArrayList<MemPair> memory = new ArrayList<>();
     private final ReentrantLock lock = new ReentrantLock();
     public void add(MemPair item){
         lock.lock();
@@ -34,6 +35,10 @@ public class Mem {
         }finally {
             lock.unlock();
         }
+    }
+
+    public void removeAll(){
+        memory = new ArrayList<>();
     }
 
     private String getValue(String memKey){

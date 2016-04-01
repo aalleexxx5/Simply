@@ -12,7 +12,7 @@ echo *a12
 
 echo iterator test
 set i 5
-set list & _ star _ a
+set list & _ stara
 set b *list
 section iter
 echo *b

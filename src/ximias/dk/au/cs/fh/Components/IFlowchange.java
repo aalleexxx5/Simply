@@ -13,4 +13,6 @@ public interface IFlowchange {
     void setCurrentLines(ArrayList<String> l);
     ArrayList<String> getCurrentLines();
     boolean runCommand(String Cmd, String[] args);
+    void setLastJump(String name);
+    String getLastJump();
 }
