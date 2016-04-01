@@ -2,6 +2,7 @@ package ximias.dk.au.cs.fh.Commands;
 
 import com.sun.istack.internal.Nullable;
 import ximias.dk.au.cs.fh.Components.ArgManipulation;
+import ximias.dk.au.cs.fh.Components.Mem;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.*;
  * Created by Alex on 26/03/2016.
  */
 public class Label extends WindowElement {
-    Color color;
+    private Color color;
     @Override
     public String use() {
         return "label <text> <locationX> <locationY> <width> <height> (optional) colour";
@@ -43,6 +44,7 @@ public class Label extends WindowElement {
 
     @Override
     public boolean execute(String[] args) {
+        args = Mem.getValuesInArgs(args);
         int nameargs=performChecksGetNameargs(5,args);
         if (nameargs==-1) return false;
         if (nameargs==-2) return true;

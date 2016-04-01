@@ -28,7 +28,7 @@ public class Run extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String[] args) {//TODO: prevent cascading threads
         if (args.length<1){
             Viewer.print("Subroutine needs an argument");
         }

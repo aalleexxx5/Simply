@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -92,6 +93,7 @@ public class Viewer extends JFrame{
         add(outputContainer, "Center");
         pack();
 
+        //TODO: Enter in input
         runButton.addActionListener(e -> {
             lookup.setFlowChange(true);
             lookup.setCurrentLines(Lookup.getLines());
@@ -172,37 +174,40 @@ public class Viewer extends JFrame{
 
     private static JFrame runtimeFrame;
     private static int elementindex = 1;
-    public static void updateElements(ArrayList<WindowElement> elements){
-        Component[] frameComps = runtimeFrame.getLayeredPane().getComponents();
-        for (WindowElement element:elements){
-            Component comp = element.getComponent();
-            boolean contains = false;
-            for (Component frameComp:frameComps){
-                if (frameComp.equals(comp)){
-                    contains = true;
-                    break;
-                }
-            }
-            if (!contains){
-                runtimeFrame.getLayeredPane().add(comp,elementindex);
-                elementindex++;
-            }
-        }
-        for (Component frameComp:frameComps){
-            boolean contains = frameComp.equals(runtimeFrame.getLayeredPane());
-            for (WindowElement element:elements){
+    private static final ReentrantLock updateLock = new ReentrantLock();
+    private static ArrayList<ComponentPair> componentList = new ArrayList<>();
+    public static void updateElements(ArrayList<WindowElement> elements){//TODO WEEEH! Concurrency issues...
+        //check if an element with same name exists, if it does, update it, else add it
+            Component[] frameComps = runtimeFrame.getLayeredPane().getComponents();
+            for (WindowElement element : elements) { // <--- The JVM yells at me here
                 Component comp = element.getComponent();
-                if (frameComp.equals(comp)){
-                    contains=true;
-                    break;
+                boolean contains = false;
+                for (Component frameComp : frameComps) {
+                    if (frameComp.equals(comp)) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if (!contains) {
+                    runtimeFrame.getLayeredPane().add(comp, elementindex);
+                    elementindex++;
                 }
             }
-            if (!contains){
-                runtimeFrame.getLayeredPane().remove(frameComp);
-                elementindex--;
+            for (Component frameComp : frameComps) {
+                boolean contains = frameComp.equals(runtimeFrame.getLayeredPane());
+                for (WindowElement element : elements) {
+                    Component comp = element.getComponent();
+                    if (frameComp.equals(comp)) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if (!contains) {
+                    runtimeFrame.getLayeredPane().remove(frameComp);
+                    elementindex--;
+                }
             }
-        }
-        runtimeFrame.getLayeredPane().repaint();
+            runtimeFrame.repaint();
     }
 
     public static void UpdateWindow(int x, int y, int width, int height, ArrayList<WindowElement> elements){
@@ -219,7 +224,7 @@ public class Viewer extends JFrame{
         }
         runtimeFrame.setBounds(x,y,width,height);
         runtimeFrame.setVisible((width!=0&&height!=0));
-        updateElements(elements);
+        //updateElements(elements);
     }
 
     public static void doneExecution(){
@@ -275,5 +280,25 @@ public class Viewer extends JFrame{
     public static void clear(){
         System.out.println("screen was cleared \n \n");
         output.setText("");
+    }
+}
+class ComponentPair{
+    Component comp;
+    String value;
+    ComponentPair(String value, Component comp){
+        this.comp=comp;
+        this.value=value;
+    }
+
+    public Component getComp() {
+        return comp;
+    }
+
+    public void setComp(Component comp) {
+        this.comp = comp;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

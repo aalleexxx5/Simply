@@ -1,0 +1,34 @@
+echo minigame test
+window 100 100 1000 900
+button L 420 760 80 80 moveLeft
+button R 502 760 80 80 moveRight
+set x 470
+label ball 470 470 30 30 ffff00
+set spikeX 500
+set spikeY 10
+run addSpike
+
+subroutine moveLeft
+sub x *x 20
+label ball *x 470 30 30 ffff00
+endsubroutine
+
+
+subroutine moveRight
+add x *x 20
+label ball *x 470 30 30 ffff00
+endsubroutine
+
+subroutine addSpike
+label spike *spikeX *spikeY 10 20 ff0000
+set c 0
+section fall
+label spike *spikeX *spikeY 30 50 *c
+add c *c 20
+add spikeY *spikeY 1
+wait 5
+if *c > 16777200 set c 0
+if *spikeY < 900 jumpto fall
+set spikeY 10
+jumpto fall
+endsubroutine

@@ -22,6 +22,12 @@ class FileManager {
             return out;
         } catch (FileNotFoundException e) {
             System.out.println("The file "+ filename +" was not found!");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+                System.exit(0);
+            }
+            System.exit(0);
             return null;
         } catch (IOException e){
             e.printStackTrace();

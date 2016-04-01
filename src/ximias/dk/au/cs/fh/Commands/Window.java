@@ -4,6 +4,7 @@ import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 26/03/2016.
@@ -32,15 +33,21 @@ public class Window extends Command
         Viewer.UpdateWindow(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]),Integer.valueOf(args[3]),windowElements);
         return true;
     }
+    private static final ReentrantLock updateLock = new ReentrantLock();
     public static void addToWindow(WindowElement element){
-        for (WindowElement elementInList:windowElements){
-            if (elementInList.getValue().equals(element.name())){
-                windowElements.remove(elementInList);
-                break;
+        updateLock.lock();
+        try {
+            for (WindowElement elementInList : windowElements) {
+                if (elementInList.getValue().equals(element.name())) {
+                    windowElements.remove(elementInList);
+                    break;
+                }
             }
+            windowElements.add(element);
+            Viewer.updateElements(windowElements);
+        }finally {
+            updateLock.unlock();
         }
-        windowElements.add(element);
-        Viewer.updateElements(windowElements);
     }
     public static WindowElement getFromList(String name){
         for (WindowElement element:windowElements){
