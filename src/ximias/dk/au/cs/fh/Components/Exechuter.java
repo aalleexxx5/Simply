@@ -14,9 +14,10 @@ class Exechuter implements Runnable{
 
     public void run() {
         ArrayList<String> lines;
-        int i = 1;
+        int i;
         Viewer.print("running Code... ");
         while (lookup.getFlowChange()) {
+            i=1;
             lines = lookup.getCurrentLines();
             lookup.setFlowChange(false);
             for (String line : lines) {
@@ -51,7 +52,7 @@ class Exechuter implements Runnable{
                         if (lookup.getLastJump() == null) {
                             Viewer.print("An error occurred in line " + i + " :" + cmd);
                         }else {
-                            Viewer.print("An error occurred in section " + lookup.getLastJump() + "line " + i + " :" + cmd);
+                            Viewer.print("An error occurred "+i+" lines after the section " + lookup.getLastJump() + "\nat the command " + cmd);
                         }
                         break;
                     }

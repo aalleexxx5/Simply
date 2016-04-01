@@ -20,7 +20,7 @@ public class Keyboard extends Command {
 
     @Override
     public String description() {
-        return "run subroutine when key is pressed. Similar to button";
+        return "run subroutine when pressed or released. Similar to button";
     }
 
     @Override

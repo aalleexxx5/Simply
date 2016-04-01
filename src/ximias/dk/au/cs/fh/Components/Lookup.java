@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Keeps track of everything. EVERYTHING! (except symbols, that is Constants's job)
  */
 public class Lookup implements IFlowchange{
-    private String lastJump;
+    private String lastJump="";
     private static ArrayList<String> lines;
     private static final Mem memInstance = new Mem();
     private static Section section;
@@ -34,7 +34,7 @@ public class Lookup implements IFlowchange{
         commands.add(subroutine);
         commands.add(new endsubroutine(this));
         commands.add(new Clear());
-        commands.add(new Run());
+        commands.add(new Run(this));
         commands.add(new Input());
         commands.add(new Exit(this));
         commands.add(new TextColor());
@@ -147,5 +147,9 @@ public class Lookup implements IFlowchange{
 
     public static ArrayList<String> getLines (){
         return lines;
+    }
+
+    public String getLastSubroutine() {
+        return "";
     }
 }

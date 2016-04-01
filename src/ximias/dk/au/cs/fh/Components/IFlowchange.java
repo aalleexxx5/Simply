@@ -15,4 +15,5 @@ public interface IFlowchange {
     boolean runCommand(String Cmd, String[] args);
     void setLastJump(String name);
     String getLastJump();
+    String getLastSubroutine();
 }

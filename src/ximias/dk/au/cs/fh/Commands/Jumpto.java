@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class Jumpto extends Command {
     private ArrayList<String> lines;
+    int sameJumps = 0;
     private final IFlowchange lookup;
     public Jumpto(IFlowchange lookup){
         this.lookup = lookup;
@@ -32,6 +33,15 @@ public class Jumpto extends Command {
     public boolean execute(String[] args) {
         args = Mem.getValuesInArgs(args);
         if (Lookup.getSection().contains(args[0])){
+            if (lookup.getLastJump().equals(args[0])){
+                sameJumps++;
+            }else{
+                sameJumps=0;
+            }
+            if (sameJumps>500000) {
+                Viewer.print("Endless loop in section " + args[0] + " detected!");
+                return false;
+            }
             lookup.setCurrentLines(Lookup.getSection().getLinesAt(args[0]));
             lookup.setLastJump(args[0]);
             lookup.setFlowChange(true);

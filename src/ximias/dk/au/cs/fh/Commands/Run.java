@@ -1,5 +1,6 @@
 package ximias.dk.au.cs.fh.Commands;
 
+import ximias.dk.au.cs.fh.Components.IFlowchange;
 import ximias.dk.au.cs.fh.Components.Lookup;
 import ximias.dk.au.cs.fh.Components.ThreadedExechuter;
 import ximias.dk.au.cs.fh.Components.Viewer;
@@ -12,11 +13,14 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 14/01/2016.
  * Command. Runs a subroutine in a new thread.
- * you thought multithreading was hard? try multithreading in the same function, sharing the same variables Concurrency issues, here I come!
+ * you thought multithreading was hard? try multithreading in the same function, sharing the same variables. Concurrency issues, here I come!
  */
 public class Run extends Command {
     private  static ArrayList<Thread> threads = new ArrayList<>();
-
+    private IFlowchange lookup;
+    public Run(IFlowchange lookup){
+        this.lookup = lookup;
+    }
     @Override
     public String description() {
         return "runs a subroutine as a new task. This allows for multitasking";
@@ -28,12 +32,24 @@ public class Run extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {//TODO: prevent cascading threads
+    public boolean execute(String[] args) {
+        if (threads.size()>5000){
+            Viewer.print("Warning: Over 5000 threads are currently running!");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ignored) {
+            }
+        }
         if (args.length<1){
             Viewer.print("Subroutine needs an argument");
+            return false;
+        }
+        if (lookup.getLastSubroutine().equals(args[0])){
+            Viewer.print("Subroutine is not allowed to be called from itself");
+            return false;
         }
         if (Lookup.getSubroutine().contains(args[0])){
-            threads.add(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0])));
+            threads.add(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0]),args[0]));
             threads.get(threads.size()-1).start();
             return true;
         }

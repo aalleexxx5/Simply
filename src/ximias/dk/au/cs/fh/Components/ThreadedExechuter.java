@@ -15,7 +15,7 @@ public class ThreadedExechuter implements Runnable {
     }
     @Override
     public void run() {
-        IFlowchange lookup = new ThreadedLookup(lines);
+        IFlowchange lookup = new ThreadedLookup(lines,subsectionName);
         //System.out.println("running Thread ");
         while (lookup.getFlowChange()) {
             int i = 1;
