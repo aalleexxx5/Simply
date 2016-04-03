@@ -1,0 +1,4 @@
+echo dialog example
+dialog hello plain message is here alfa 2 hello? no!
+if *alfa = hello? dialog oh! I expected you to hate me warning <3 beta 1 ok
+exit

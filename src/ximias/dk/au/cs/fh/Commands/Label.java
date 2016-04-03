@@ -14,7 +14,7 @@ import java.awt.*;
 public class Label extends WindowElement {
     @Override
     public String use() {
-        return "label <text> <locationX> <locationY> <width> <height> (optional) colour";
+        return "label <text> <locationX> <locationY> <width> <height> (optional) <colour> (optional) <displayName>";
     }
 
     @Override
@@ -25,7 +25,12 @@ public class Label extends WindowElement {
     @Override
     public Component getComponent() {
         if (component==null){
-            JLabel comp = new JLabel(ArgManipulation.toHTML(getValue()));
+            JLabel comp;
+            if (getExtra() != null&&getExtra().equals("notext")){
+                comp = new JLabel();
+            }else{
+                comp = new JLabel(ArgManipulation.toHTML(getValue()));
+            }
             comp.setBackground(getBackground());
             comp.setOpaque(true);
             comp.setBounds(new Rectangle(getLocation(),getSize()));
@@ -52,7 +57,12 @@ public class Label extends WindowElement {
                     return false;
                 }
             }
-            Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),col ,null));
+            if (args[args.length-1].equals("false")||args[args.length-1].equals("no")){
+                Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),col ,"notext"));
+            }else if (args[args.length-1].equals("false")||args[args.length-1].equals("no")){
+                Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),col ,"text"));
+            }
+                Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),col ,null));
         }else {
             Window.addToWindow(new Label().init(this.getValue(), Integer.valueOf(args[nameargs]), Integer.valueOf(args[nameargs + 1]), Integer.valueOf(args[nameargs + 2]), Integer.valueOf(args[nameargs + 3]),Color.white, null));
         }

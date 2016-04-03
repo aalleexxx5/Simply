@@ -9,39 +9,44 @@ import ximias.dk.au.cs.fh.Components.*;
 public class Sub extends Command {
     @Override
     public String description() {
-        return "Subtract two numbers. (optional) Puts answer in variable";
+        return "Subtract two numbers or remove start of text.";
     }
 
     @Override
     public String use() {
-        return "sub <num1> <num2> (the same as <num1> - <num2>) write result in console \n sub <varName> <num> <num> ... <num>";
+        return "Numbers:\nsub <num1> <num2> (the same as <num1> - <num2>) \nsub <varName> <num> <num>\nText:\nsub <varName> <location/symbol> <data>";
     }
 
     @Override
     public boolean execute(String[] args) { //Add var num ... num OR Add num .. num
         args = Mem.getValuesInArgs(args);
-        if (ArgManipulation.isNumber(args[0])) { //option 2
-            int ans = Integer.valueOf(args[0]);
-                for (int i = 1; i < args.length; i++) {
-                    if (!ArgManipulation.isNumber(args[i])){
-                        Viewer.print("an argument wasn't a number: " + args[i]);
-                        return false;
-                    }
-                    ans -= Integer.valueOf(args[i]);
-                }
-                Viewer.print(String.valueOf(ans));
-                return true;
-        } else {
-                int ans = Integer.valueOf(args[1]);
-                for (int i = 2; i < args.length; i++) {
-                    if (!ArgManipulation.isNumber(args[i])){
-                        Viewer.print("an argument wasn't a number: " + args[i]);
-                        return false;
-                    }
-                    ans -= Integer.valueOf(args[i]);
-                }
-                Lookup.getMemInstance().add(new MemPair(args[0], String.valueOf(ans)));
-                return true;
+        if (args.length<3) {
+            Viewer.print("not enough arguments");
+            return false;
         }
+        if (args.length<4&&ArgManipulation.isNumber(args[1])) {
+            if (ArgManipulation.isNumber(args[0])) {
+                Viewer.print(String.valueOf(Integer.valueOf(args[0])-Integer.valueOf(args[1])));
+                return true;
+            }
+            if(ArgManipulation.isNumber(args[2])) {
+                Lookup.getMemInstance().add(new MemPair(args[0], String.valueOf(Integer.valueOf(args[1]) - Integer.valueOf(args[2]))));
+                return true;
+            }
+        }
+        String data = ArgManipulation.argsToString(2,args.length,args);
+        if (ArgManipulation.isNumber(args[1])){
+            Lookup.getMemInstance().add(new MemPair(args[0],data.substring(Integer.valueOf(args[1]))));
+            return true;
+        }else{
+            if (args[1].equals(Constants.NO_SPACE_SYMBOL)) args[1]=" ";
+            if (!data.contains(args[1])){
+                Viewer.print(args[1] + " was not found");
+                return false;
+            }
+            Lookup.getMemInstance().add(new MemPair(args[0],data.substring(data.indexOf(args[1]))));
+            return true;
+        }
+
     }
 }

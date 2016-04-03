@@ -3,6 +3,7 @@ package ximias.dk.au.cs.fh.Commands;
 import ximias.dk.au.cs.fh.Components.ArgManipulation;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -36,7 +37,7 @@ public class Window extends Command
         return true;
     }
     private static final ReentrantLock updateLock = new ReentrantLock();
-    public static void addToWindow(WindowElement element){
+    static void addToWindow(WindowElement element){
         updateLock.lock();
         try {
             if (!contains(element.getValue())){
@@ -45,6 +46,13 @@ public class Window extends Command
                 windowElements.add(component);
             }else{
                 ComponentPair com = getFromList(element.getValue());
+                if (element.getExtra() != null) {
+                    if (element.getExtra().equals("text")) {
+                        com.drawText(true);
+                    } else if (element.getExtra().equals("notext")) {
+                        com.drawText(false);
+                    }
+                }
                 com.setBackground(element.getBackground());
                 getFromList(element.getValue()).setBounds(new Rectangle(element.getLocation(),element.getSize()));
             }
@@ -91,16 +99,22 @@ class ComponentPair{
         this.comp=comp;
         this.value=value;
     }
-    public Component getComp() {
+    Component getComp() {
         return comp;
     }
-    public void setBounds(Rectangle rectangle){
+    void setBounds(Rectangle rectangle){
         comp.setBounds(rectangle);
     }
     void setBackground(Color color){
         comp.setBackground(color);
     }
-
+    void drawText(boolean drawtext){
+        if (drawtext){
+            comp.setFont(UIManager.getDefaults().getFont("Pane.font"));
+        }else{
+            comp.setFont(new Font(null,Font.PLAIN,0));
+        }
+    }
     public String getValue() {
         return value;
     }

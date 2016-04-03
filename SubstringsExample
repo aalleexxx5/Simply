@@ -1,0 +1,21 @@
+echo Div and Substring example
+windowsize 400 400
+set a hello world
+div b c _ *a
+echo b: *b
+echo c: *c
+
+div b c 3 *a
+echo b: *b
+sub c 1 *c
+echo c: *c
+echo saving hello world to hello.txt
+save hello.txt hello world
+echo loading hello.txt:
+load hello.txt a
+echo *a
+echo logging world to hello.txt
+log hello.txt world
+echo loading hello.txt:
+load hello.txt a
+echo *a

@@ -1,14 +1,11 @@
 package ximias.dk.au.cs.fh.Components;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
-class FileManager {
+public class FileManager {
 
-    public static ArrayList<String> readFileList(String filename){ // utility function for reading files
+    static ArrayList<String> readFileList(String filename){ // utility function for reading files
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
@@ -35,40 +32,37 @@ class FileManager {
         }
     }
 
-// --Commented out by Inspection START (25/03/2016 20:11):
-//    public String readFile(String filename){ // utility function for reading files
-//        try {
-//            BufferedReader reader = new BufferedReader(new FileReader(filename));
-//            String line;
-//            String out = "";
-//            line = reader.readLine();
-//            while(line != null) {
-//                out = out + line + "\n";
-//                line = reader.readLine();
-//            }
-//            reader.close();
-//            return out;
-//        } catch (FileNotFoundException e) {
-//            System.out.println("The file "+ filename +" was not found!");
-//            return "";
-//        } catch (IOException e){
-//            e.printStackTrace();
-//            return "";
-//        }
-//    }
-// --Commented out by Inspection STOP (25/03/2016 20:11)
 
-// --Commented out by Inspection START (25/03/2016 20:11):
-//    public boolean writeFile(String output, String filename){ //utility function for writing files
-//        try {
-//            PrintWriter writer = new PrintWriter(new FileWriter(filename));
-//            writer.write(output);
-//            writer.close();
-//            return true;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-// --Commented out by Inspection STOP (25/03/2016 20:11)
+    public static String readFile(String filename){ // utility function for reading files
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line;
+            String out = "";
+            line = reader.readLine();
+            while(line != null) {
+                out = out + line + "\n";
+                line = reader.readLine();
+            }
+            reader.close();
+            return out;
+        } catch (FileNotFoundException e) {
+            System.out.println("The file "+ filename +" was not found!");
+            return "";
+        } catch (IOException e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static boolean writeFile(String output, String filename, boolean append){ //utility function for writing files
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter(filename,append));
+            writer.write(output);
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

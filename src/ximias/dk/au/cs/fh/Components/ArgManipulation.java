@@ -22,6 +22,15 @@ public class ArgManipulation {
             return false;
         }
     }
+    public static boolean isHex(String n){
+        try{
+            //noinspection ResultOfMethodCallIgnored
+            Integer.parseInt(n,16);
+        }catch (NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
     public static String argsToString(int start, int stop,String[] args) {
         String value = "";
         for (int i = start; i < stop; i++) {
@@ -35,6 +44,13 @@ public class ArgManipulation {
         }
         value = value.replaceAll(Constants.NEWLINE_SYMBOL, "\n");
         return value;
+    }
+    public static String[] escape(String[] args){
+        for (int i = 0; i < args.length; i++) {
+            args[i]=args[i].replaceAll(Constants.NEWLINE_SYMBOL,"\n");
+            args[i]=args[i].replaceAll(Constants.ESCAPE_STAR,"*");
+        }
+        return args;
     }
     public static String toHTML(String text){
         return "<html>"+text.replaceAll("\n","<br>")+"</html>";

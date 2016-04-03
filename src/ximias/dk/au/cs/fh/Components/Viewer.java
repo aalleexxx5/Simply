@@ -16,8 +16,10 @@ import java.awt.event.WindowEvent;
  * Houses the UI. Prints the text. Changes the UI.
  */
 public class Viewer extends JFrame{
+    private String filename;
     private static Thread exeThread;
     public Viewer(String[] args){
+        this.filename=args[0];
         lookup = new Lookup(FileManager.readFileList(args[0]));
         createUI();
     }
@@ -92,15 +94,15 @@ public class Viewer extends JFrame{
         add(outputContainer, "Center");
         pack();
 
-        //TODO: Enter in input
         runButton.addActionListener(e -> {
             Lookup.getMemInstance().removeAll();
             Window.removeAll();
+            output.setText("");
             if (runtimeFrame != null) {
                 runtimeFrame.getLayeredPane().removeAll();
             }
             lookup.setFlowChange(true);
-            lookup.setCurrentLines(Lookup.getLines());
+            lookup.setCurrentLines(FileManager.readFileList(filename));
             exeThread = new Thread(new Exechuter(lookup));
             exeThread.start();
             runButton.setEnabled(false);
@@ -138,7 +140,7 @@ public class Viewer extends JFrame{
         TableModel commandData = new AbstractTableModel() {
             @Override
             public int getRowCount() {
-                return Lookup.getNumCommands();
+                return Lookup.getNumCommands()+1;
             }
 
             @Override
@@ -148,10 +150,18 @@ public class Viewer extends JFrame{
 
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
-                if (columnIndex==0){
-                    return Lookup.getCommandName(rowIndex);
+                if (rowIndex<Lookup.getNumCommands()) {
+                    if (columnIndex == 0) {
+                        return Lookup.getCommandName(rowIndex);
+                    } else {
+                        return Lookup.getCommandDescription(rowIndex);
+                    }
                 }else{
-                    return Lookup.getCommandDescription(rowIndex);
+                    if (columnIndex == 0) {
+                        return "Comment";
+                    } else {
+                        return "To put comments in code, surround it with comment and endcomment like a subroutine";
+                    }
                 }
             }
         };
@@ -165,7 +175,7 @@ public class Viewer extends JFrame{
                 JOptionPane.showMessageDialog(null,Lookup.getCommandUse(commandTable.getSelectedRow()),"Usage",JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        commandFrame.setPreferredSize(new Dimension(commandTable.getMinimumSize().width,commandTable.getRowHeight()*(commandTable.getRowCount()+5)));
+        commandFrame.setPreferredSize(new Dimension(commandTable.getMinimumSize().width,commandTable.getRowHeight()*(commandTable.getRowCount()+4)));
         commandFrame.add(scrollpane);
         commandFrame.setVisible(true);
         commandFrame.addWindowListener(new WindowAdapter(){
@@ -203,16 +213,16 @@ public class Viewer extends JFrame{
         runtimeFrame.setBounds(x,y,width,height);
         runtimeFrame.setVisible((width!=0&&height!=0));
     }
-    public static void addKeyboard(KeyListener listener){
-        runtimeFrame.addKeyListener(listener);
+    public static void addKeyboard(KeyEventDispatcher e){
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e);
     }
 
-    public static void removeKeyboard(KeyListener l) {
-        runtimeFrame.removeKeyListener(l);
+    public static void removeKeyboard(KeyEventDispatcher e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(e);
     }
 
-    public static void doneExecution(){
-        if (runtimeFrame==null||runtimeFrame.isVisible()){
+    static void doneExecution(){
+        if (runtimeFrame!=null&&runtimeFrame.isVisible()){
             return;
         }
         if (Run.isDone()&&!exeThread.isAlive())

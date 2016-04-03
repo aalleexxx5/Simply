@@ -3,6 +3,7 @@ package ximias.dk.au.cs.fh.Commands;
 import ximias.dk.au.cs.fh.Components.Lookup;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Command. used to get keyboard input
  */
 public class Keyboard extends Command {
-    private ArrayList<KeyPair> keyPairs = new ArrayList();
+    private ArrayList<KeyPair> keyPairs = new ArrayList<>();
     @Override
     public String use() {
         return "keyboard <name> <type> <key> <subroutine>\ntypes are typed, down/pressed, up/released";
@@ -29,7 +30,7 @@ public class Keyboard extends Command {
             Viewer.print("only 50 keys kan be assigned at a time. You have reached the limit!");
             return false;
         }
-        KeyListener keyListener;
+        KeyEventDispatcher keyEventDispatcher;
         if (args.length==2||args.length==1){
             KeyPair kp = getFromList(args[0]);
             if (kp != null) {
@@ -39,71 +40,42 @@ public class Keyboard extends Command {
             return false;
         }
             if (args[1].equalsIgnoreCase("up")||args[1].equalsIgnoreCase("released")){
-                keyListener = new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-
-                    }
-
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-
-                    }
-
-                    @Override
-                    public void keyReleased(KeyEvent e) {
+                keyEventDispatcher = e -> {
+                    if (e.getID()==KeyEvent.KEY_RELEASED)
                         if(KeyEvent.getKeyText(e.getKeyCode()).equalsIgnoreCase(args[2])) {
                             Lookup.runMainCommand("run", new String[]{args[args.length - 1]});
+                            return true;
                         }
-                    }
+                    return false;
                 };
             }else if (args[1].equalsIgnoreCase("down")||args[1].equalsIgnoreCase("pressed")){
-                keyListener = new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-
-                    }
-
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        if (KeyEvent.getKeyText(e.getKeyCode()).equalsIgnoreCase(args[2])) {
+                keyEventDispatcher = e -> {
+                    if (e.getID()==KeyEvent.KEY_PRESSED)
+                        if(KeyEvent.getKeyText(e.getKeyCode()).equalsIgnoreCase(args[2])) {
                             Lookup.runMainCommand("run", new String[]{args[args.length - 1]});
+                            return true;
                         }
-                    }
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-
-                    }
+                    return false;
                 };
             }else if (args[1].equalsIgnoreCase("typed")){
-                keyListener = new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        if(String.valueOf(e.getKeyChar()).equalsIgnoreCase(args[2])) {
-                        Lookup.runMainCommand("run", new String[]{args[args.length - 1]});
-                    }
-                    }
-
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-
-                    }
-
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-
-                    }
+                keyEventDispatcher = e -> {
+                    if (e.getID()==KeyEvent.KEY_TYPED)
+                        if(KeyEvent.getKeyText(e.getKeyChar()).equalsIgnoreCase(args[2])) {
+                            Lookup.runMainCommand("run", new String[]{args[args.length - 1]});
+                            return true;
+                        }
+                    return false;
                 };
             }else{
                 Viewer.print("no type was found");
                 return false;
             }
-        keyPairs.add(new KeyPair(args[0],keyListener));
-        Viewer.addKeyboard(keyListener);
+        keyPairs.add(new KeyPair(args[0],keyEventDispatcher));
+        Viewer.addKeyboard(keyEventDispatcher);
         return true;
     }
 
-    KeyPair getFromList(String name){
+    private KeyPair getFromList(String name){
         for (KeyPair keyPair : keyPairs) {
             if (keyPair.getName().equals(name)){
                 return keyPair;
@@ -115,13 +87,13 @@ public class Keyboard extends Command {
 }
 class KeyPair{
     private String name;
-    private KeyListener listener;
-    KeyPair(String name,KeyListener listener){
+    private KeyEventDispatcher listener;
+    KeyPair(String name,KeyEventDispatcher listener){
         this.listener=listener;
         this.name=name;
     }
 
-    public KeyListener getListener() {
+    KeyEventDispatcher getListener() {
         return listener;
     }
 

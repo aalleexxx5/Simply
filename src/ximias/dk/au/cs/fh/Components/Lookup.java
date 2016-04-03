@@ -51,6 +51,10 @@ public class Lookup implements IFlowchange{
         commands.add(new Random());
         commands.add(new Keyboard());
         commands.add(new Image());
+        commands.add(new Save());
+        commands.add(new Load());
+        commands.add(new Log());
+        commands.add(new Textarea());
     }
 
     public boolean run(String cmd, String[] args){
@@ -96,19 +100,19 @@ public class Lookup implements IFlowchange{
         this.lastJump = lastJump;
     }
 
-    public static int getNumCommands(){
+    static int getNumCommands(){
         return commands.size();
     }
 
-    public static String getCommandName(int index){
+    static String getCommandName(int index){
         return commands.get(index).name();
     }
 
-    public static String getCommandUse(int index){
+    static String getCommandUse(int index){
         return commands.get(index).use();
     }
 
-    public static String getCommandDescription(int index){
+    static String getCommandDescription(int index){
         return commands.get(index).description();
     }
 

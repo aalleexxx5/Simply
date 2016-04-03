@@ -1,0 +1,6 @@
+echo textarea example
+window 100 100 500 500
+textarea myArea 10 10 300 300 alfa sub1 lo/newline ff0000
+subroutine sub1
+if *alfa = hello/newline textarea myArea 10 10 300 300 a 00ff00
+endsubroutine

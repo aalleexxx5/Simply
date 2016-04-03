@@ -7,7 +7,7 @@ button L 420 760 80 80 moveLeft
 button R 502 760 80 80 moveRight
 set x 485
 set y 670
-label ball *y 670 30 30 ffff00
+label ball *x *y 30 30 ffff00 false
 set spikeList & _ starSpike
 set colFactor 51
 set spikeWidth 20

@@ -27,6 +27,17 @@ public class Subroutine extends Command {
                         break;
                     }
                 }
+            }else if (lines.get(i).startsWith("comment")){
+                for (int j = i; j < lines.size(); j++) {
+                    if (lines.get(j).toLowerCase().startsWith("endcomment")){
+                        for (int k = i; k <=j; k++) {
+                            newlines.remove(i-l);
+                        }
+                        l+=1+j-i;
+                        i=j;
+                        break;
+                    }
+                }
             }
         }
         Lookup.setLines(newlines);
@@ -41,7 +52,7 @@ public class Subroutine extends Command {
         return false;
     }
 
-    public ArrayList<String> getLinesIn(String key){
+    ArrayList<String> getLinesIn(String key){
         for (SectionPair routine : routines){
             if(routine.getKey().equals(key)){
                 return(routine.getValue());
