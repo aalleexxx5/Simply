@@ -77,7 +77,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
         }
     }
 
-    private boolean event(int argnum){ //argnum is the arguments relevant to the event (refer to comment at class signature) eventstate is weather the statement evaluated to true
+    private boolean event(int argnum){ //argnum is the arguments relevant to the event (refer to comment at class signature)
                     String[] a = new String[args.length - (argnum + 1)];
                     for (int i = 0; i < a.length; i++) {
                         a[i] = args[argnum + 1 + i];

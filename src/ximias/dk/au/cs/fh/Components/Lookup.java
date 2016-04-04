@@ -20,10 +20,10 @@ public class Lookup implements IFlowchange{
     public Lookup(ArrayList<String> l){
         lines = l;
         section = new Section(l);
-        subroutine = new Subroutine(l);
         commands.add(new Echo());
         commands.add(new Set());
         commands.add(jumpto);
+        subroutine = new Subroutine(l,this);
         commands.add(new If(this));
         commands.add(new Add());
         commands.add(new Sub());
@@ -55,6 +55,7 @@ public class Lookup implements IFlowchange{
         commands.add(new Load());
         commands.add(new Log());
         commands.add(new Textarea());
+        commands.add(new Draw());
     }
 
     public boolean run(String cmd, String[] args){

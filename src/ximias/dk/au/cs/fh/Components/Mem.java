@@ -78,4 +78,10 @@ public class Mem {
         }
         return ans;
     }
+    public static String getMemValue(String arg){
+            while (arg.contains(Constants.VARIABLE_SYMBOL)) {
+                arg = arg.substring(0,arg.lastIndexOf(Constants.VARIABLE_SYMBOL))+Lookup.getMemInstance().getValue(arg.substring(arg.lastIndexOf(Constants.VARIABLE_SYMBOL)+1));
+            }
+        return arg;
+    }
 }

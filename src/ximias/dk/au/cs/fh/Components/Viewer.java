@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -20,7 +21,6 @@ public class Viewer extends JFrame{
     private static Thread exeThread;
     public Viewer(String[] args){
         this.filename=args[0];
-        lookup = new Lookup(FileManager.readFileList(args[0]));
         createUI();
     }
 
@@ -32,7 +32,7 @@ public class Viewer extends JFrame{
     private static JFrame win;
     private static JToggleButton commandButton;
     private static JFrame commandFrame;
-    private final Lookup lookup;
+    private Lookup lookup;
 
     private void createUI(){
         win = this;
@@ -101,8 +101,7 @@ public class Viewer extends JFrame{
             if (runtimeFrame != null) {
                 runtimeFrame.getLayeredPane().removeAll();
             }
-            lookup.setFlowChange(true);
-            lookup.setCurrentLines(FileManager.readFileList(filename));
+            lookup=new Lookup(FileManager.readFileList(filename));
             exeThread = new Thread(new Exechuter(lookup));
             exeThread.start();
             runButton.setEnabled(false);
@@ -188,6 +187,7 @@ public class Viewer extends JFrame{
 
     private static JFrame runtimeFrame;
     private static int elementindex = 1;
+    private static JLabel canvas;
     public static void addElement(Component element){
         runtimeFrame.getLayeredPane().add(element,elementindex);
         elementindex++;
@@ -195,7 +195,17 @@ public class Viewer extends JFrame{
     public static void removeElement(Component element){
         runtimeFrame.getLayeredPane().remove(element);
         elementindex--;
-        runtimeFrame.repaint();
+    }
+    public static void drawElement(BufferedImage image){
+        if (canvas == null) {
+            canvas=new JLabel(new ImageIcon(image));
+            canvas.setHorizontalAlignment(JLabel.LEFT);
+            canvas.setVerticalAlignment(JLabel.TOP);
+            canvas.setBounds(0,0,runtimeFrame.getWidth(),runtimeFrame.getHeight());
+            runtimeFrame.getLayeredPane().add(canvas,-1);
+        }else{
+            canvas.setIcon(new ImageIcon(image));
+        }
     }
 
     public static void UpdateWindow(int x, int y, int width, int height){
@@ -206,6 +216,7 @@ public class Viewer extends JFrame{
             runtimeFrame.addWindowListener(new WindowAdapter(){
                 public void windowClosing(WindowEvent winEvt) {
                     runtimeFrame.setVisible(false);
+                    canvas=null;
                     doneExecution();
                 }
             });
@@ -267,7 +278,7 @@ public class Viewer extends JFrame{
 
     public static void print(String line){
         System.out.println(line);
-        output.append(line+"\n");
+            output.append(line+"\n");
             output.setCaretPosition(output.getDocument().getLength());
     }
 

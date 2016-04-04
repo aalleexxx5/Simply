@@ -1,0 +1,22 @@
+echo crash and burn!!
+
+window 100 100 500 500
+set alfa 100
+set a 250
+set b 50
+graphics a 400 400
+section section2
+section section1
+sub a *a 1
+pixel *a *b ffffff
+if *a > 200 jumpto section1
+sub b *b 1
+add a 200 *b
+if *b > 0 jumpto section2
+line 1 1 ff0000 *alfa 100
+rectangle 100 100 00ff00 100 100 45
+text 100 100 a9ffa9 12 Hello world 45
+circle 160 90 009aff 100
+polygon 200 300 ffa600 210 370 120 230 340 250 0
+endgraphics
+draw a
