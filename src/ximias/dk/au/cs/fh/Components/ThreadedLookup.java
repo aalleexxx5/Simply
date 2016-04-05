@@ -11,6 +11,7 @@ import java.util.ArrayList;
 class ThreadedLookup implements IFlowchange {
     private String lastJump="", lastSubroutine;
     private boolean flowChange = true;
+    private boolean wait=false;
     private final ArrayList<Command> commands = new ArrayList<>();
     private final Jumpto jumpto = new Jumpto(this);
 
@@ -24,7 +25,7 @@ class ThreadedLookup implements IFlowchange {
         commands.add(new Sub());
         commands.add(new Mul());
         commands.add(new Div());
-        commands.add(new Wait());
+        commands.add(new Wait(this));
         commands.add(new endsubroutine(this));
         commands.add(jumpto);
         commands.add(Lookup.getSection());
@@ -49,6 +50,11 @@ class ThreadedLookup implements IFlowchange {
         commands.add(new Load());
         commands.add(new Log());
         commands.add(new Textarea());
+        commands.add(new Draw());
+        commands.add(new Buffer());
+        commands.add(new Local());
+        commands.add(new Inc());
+        commands.add(new Dec());
     }
 
     public boolean run(String cmd, String[] args) {
@@ -108,5 +114,13 @@ class ThreadedLookup implements IFlowchange {
     @Override
     public String getLastSubroutine() {
         return lastSubroutine;
+    }
+    public boolean didWait(){
+        boolean ans = wait;
+        wait = false;
+        return ans;
+    }
+    public void waiting(){
+        wait=true;
     }
 }

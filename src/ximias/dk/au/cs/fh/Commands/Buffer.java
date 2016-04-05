@@ -1,25 +1,23 @@
 package ximias.dk.au.cs.fh.Commands;
 
 import ximias.dk.au.cs.fh.Commands.Graphics.Graphics;
-import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 04/04/2016.
  */
-public class Draw extends Command {
-
+public class Buffer extends Command {
     @Override
     public String use() {
-        return "draw <name> <locX> <locY>";
+        return "buffer <name>";
     }
 
     @Override
     public String description() {
-        return "draw the content of a graphics block";
+        return "Buffer graphics, to display at a location later. Subsequent draws will use the buffered version";
     }
 
     @Override
     public boolean execute(String[] args) {
-        return Viewer.drawElement(Graphics.getImage(args[0]));
+        return Graphics.buffer(args[0]);
     }
 }

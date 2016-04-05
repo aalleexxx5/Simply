@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Keeps track of everything. EVERYTHING! (except symbols, that is Constants's job)
  */
 public class Lookup implements IFlowchange{
+    private boolean wait=false;
     private String lastJump="";
     private static ArrayList<String> lines;
     private static final Mem memInstance = new Mem();
@@ -29,7 +30,7 @@ public class Lookup implements IFlowchange{
         commands.add(new Sub());
         commands.add(new Mul());
         commands.add(new Div());
-        commands.add(new Wait());
+        commands.add(new Wait(this));
         commands.add(section);
         commands.add(subroutine);
         commands.add(new endsubroutine(this));
@@ -56,6 +57,10 @@ public class Lookup implements IFlowchange{
         commands.add(new Log());
         commands.add(new Textarea());
         commands.add(new Draw());
+        commands.add(new Buffer());
+        commands.add(new Local());
+        commands.add(new Inc());
+        commands.add(new Dec());
     }
 
     public boolean run(String cmd, String[] args){
@@ -156,5 +161,14 @@ public class Lookup implements IFlowchange{
 
     public String getLastSubroutine() {
         return "";
+    }
+
+    public boolean didWait(){
+        boolean ans = wait;
+        wait = false;
+        return ans;
+    }
+    public void waiting(){
+        wait=true;
     }
 }

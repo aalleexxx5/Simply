@@ -27,6 +27,10 @@ public class Window extends Command
 
     @Override
     public boolean execute(String[] args) {
+        if (args.length<4){
+            Viewer.print("Not enough arguments, need 4.");
+            return false;
+        }
         for (String arg:args){
             if (!ArgManipulation.isNumberAndPositive(arg)){
                 Viewer.print("Window location and height must be numbers and positive");

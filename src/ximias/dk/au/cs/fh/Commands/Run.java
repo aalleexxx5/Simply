@@ -49,7 +49,7 @@ public class Run extends Command {
             return false;
         }
         if (Lookup.getSubroutine().contains(args[0])){
-            threads.add(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0]),args[0]));
+            threads.add(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0]),args[0]+threads.size()));
             threads.get(threads.size()-1).start();
             return true;
         }
@@ -73,6 +73,9 @@ public class Run extends Command {
 
     public static boolean noThreads(){
         return threads.size()<1;
+    }
+    public static int numThreads(){
+        return threads.size();
     }
 
     private static void removeDeads(){

@@ -16,4 +16,6 @@ public interface IFlowchange {
     void setLastJump(String name);
     String getLastJump();
     String getLastSubroutine();
+    boolean didWait();
+    void waiting();
 }

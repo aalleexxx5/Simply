@@ -25,7 +25,8 @@ public class Execute extends Command {
     @Override
     public boolean execute(String[] args) {
         if (Lookup.getSubroutine().contains(args[0])) {
-            Thread exeThread = new Thread(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0])));
+            Thread exeThread = new Thread(new Thread(new ThreadedExechuter(Lookup.getSubroutine().getLinesIn(args[0]),args[0]),args[0]));
+            exeThread.setName(args[0]+Run.numThreads());
             exeThread.start();
             try {
                 exeThread.join();

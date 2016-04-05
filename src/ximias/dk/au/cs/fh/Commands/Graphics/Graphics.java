@@ -6,7 +6,11 @@ import ximias.dk.au.cs.fh.Components.Mem;
 import ximias.dk.au.cs.fh.Components.Viewer;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.LookupOp;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -14,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by Alex on 04/04/2016.
  * Reference for all graphics blocks and buffered images.
  */
-public class Graphics {
+public class Graphics {//TODO: possibly needs optimising
     static ArrayList<GraphicsBlock> graphicsBlocks=new ArrayList<>();
     static ArrayList<BufferedPair> bufferedImages=new ArrayList<>();
     final static ReentrantLock lock = new ReentrantLock();
@@ -54,6 +58,7 @@ public class Graphics {
                     return true;
                 }
             }
+            Viewer.print("an element with that name was not found");
             return false;
         }finally {
             lock.unlock();
@@ -94,6 +99,7 @@ public class Graphics {
                             for (SectionPair sectionPair : section) {
                                 if (sectionPair.getKey().equals(params[params.length-1])){
                                     line=sectionPair.getLine();
+                                    break;
                                 }
                             }
                         }else{
@@ -114,16 +120,16 @@ public class Graphics {
                     }
                     Color color = Color.black;
                     int locX, locY;
-                    if (params[0].length()>3 && ArgManipulation.isNumber(params[1]) && ArgManipulation.isNumber(params[2]) && ArgManipulation.isHex(params[3])) {
+                    if (params.length>3&&params[0].length()>3 && ArgManipulation.isNumber(params[1]) && ArgManipulation.isNumber(params[2]) && ArgManipulation.isHex(params[3])) {
                         locX = Integer.valueOf(params[1]);
                         locY = Integer.valueOf(params[2]);
-                        if (params[3].length() == 6 && ArgManipulation.isHex(params[3])) {
+                        if (params[3].length() == 6) {
                             color = new Color(Integer.parseInt(params[3], 16));
                         } else if (params[3].length() == 9 && ArgManipulation.isNumber(params[3])) {
-                            color = new Color(Integer.valueOf(params[3]));
+                            color = new Color(Integer.valueOf(params[3].substring(0,3)),Integer.valueOf(params[3].substring(3,6)),Integer.valueOf(params[3].substring(6,9)));
                         } else {
-                            Viewer.print("The length of the color value was not either 6(hex) or 9(dec)");
-
+                            Viewer.print(params[0]+": The length of the color value was not either 6(hex) or 9(dec) digits: "+params[3]);
+                            return null;
                         }
                         GraphicsElement ge;
                         if (element.startsWith("pixel")) {
@@ -146,13 +152,13 @@ public class Graphics {
                                     ge = null;
                                 }
                             } else if (element.startsWith("rectangle")) {
-                                if (ArgManipulation.isNumber(params[5]) && ArgManipulation.isNumber(params[6])) {
+                                if (params.length>6&&ArgManipulation.isNumber(params[5]) && ArgManipulation.isNumber(params[6])) {
                                     ge = new GraphicsElement(GraphicsElement.RECTANGLE, locX, locY, color);
                                     ge.setWidth(Math.abs(width));
                                     ge.setHeight(Math.abs(Integer.valueOf(params[5])));
                                     ge.setRotation(Integer.valueOf(params[6]));
                                 } else {
-                                    Viewer.print("Rectangle, height or rotation was not a number");
+                                    Viewer.print("Rectangle, height or rotation was not a number or were missing");
                                     ge = null;
 
                                 }
@@ -199,17 +205,26 @@ public class Graphics {
                                     Viewer.print("text, height or rotation was not a number");
                                     ge = null;
                                 }
-                            } else {
+                            }else{
                                 ge = null;
                             }
                         }
-                        if (ge != null) {
                             graphicsElements.add(ge);
-                        }
                     } else {
-                        String[] a = new String[params.length - 1];
-                        System.arraycopy(params, 1, a, 0, params.length - 1);
-                        Lookup.runMainCommand(params[0], a);
+                        if (params[0].equalsIgnoreCase("draw")){
+                            GraphicsElement ge;
+                            ge=new GraphicsElement(GraphicsElement.IMAGE,Integer.valueOf(params[2]),Integer.valueOf(params[3]),Color.black);
+                            BufferedImage image = getImage(params[1]);
+                            ge.setWidth(image.getWidth());
+                            ge.setHeight(image.getHeight());
+                            ge.setRotation(Integer.valueOf(params[params.length-1]));
+                            ge.setImage(image);
+                            graphicsElements.add(ge);
+                        }else {
+                            String[] a = new String[params.length - 1];
+                            System.arraycopy(params, 1, a, 0, params.length - 1);
+                            Lookup.runMainCommand(params[0], a);
+                        }
                     }
                 }
             }
@@ -218,22 +233,30 @@ public class Graphics {
     }
 
     private static BufferedImage createImage(GraphicsPair pair){
+        if (pair == null) {
+            return null;
+        }
         BufferedImage image = new BufferedImage(pair.getWidth(),pair.getHeight(),BufferedImage.TYPE_INT_RGB);
-        Graphics2D gfx =(Graphics2D) image.getGraphics();
+        Graphics2D gfx =image.createGraphics();
+        AffineTransform origin = gfx.getTransform();
         for (GraphicsElement element : pair.getElements()) {
+            gfx.setTransform(origin);
             if (element.getType()==0){
-                image.setRGB(element.getX(),element.getY(),element.getColor().getRGB());
+                try {//TODO: Please let there be a faster way
+                    image.setRGB(element.getX(),element.getY(),element.getColor().getRGB());
+                }catch (ArrayIndexOutOfBoundsException e){
+                    Viewer.print("A Pixel was outside the window!");
+                }
             }else {
                 gfx.setColor(element.getColor());
                 if (element.getType() == 1) {
                     gfx.drawLine(element.getX(),element.getY(),element.getWidth(),element.getHeight());
-                } else if (element.getType() == 2) {
-                    gfx.translate(element.getX(),element.getY());
+                } else if (element.getType() == GraphicsElement.RECTANGLE) {
+                    gfx.translate(element.getX()+(element.getWidth()/2),element.getY()+(element.getHeight()/2));
                     double rot = element.getRotation()*(Math.PI/180);
                     gfx.rotate(rot);
+                    gfx.translate(-(element.getWidth()/2),-(element.getHeight()/2));
                     gfx.fillRect(0,0,element.getWidth(),element.getHeight());
-                    gfx.rotate(-rot);
-                    gfx.translate(-element.getX(),-element.getY());
                 } else if (element.getType() == 3) {
                     gfx.translate(element.getX(),element.getY());
                     int[] x=element.getXs();
@@ -247,8 +270,6 @@ public class Graphics {
                     double rot = element.getRotation()*(Math.PI/180);
                     gfx.rotate(rot);
                     gfx.fillPolygon(x,y,element.getXs().length);
-                    gfx.rotate(-rot);
-                    gfx.translate(-element.getX(),-element.getY());
                 } else if (element.getType() == 4) {
                     gfx.fillOval(element.getX(),element.getY(),element.getWidth(),element.getWidth());
                 } else if (element.getType() == 5) {
@@ -257,8 +278,12 @@ public class Graphics {
                     gfx.rotate(rot);
                     gfx.setFont(new Font(gfx.getFont().getName(),Font.PLAIN,element.getWidth()));
                     gfx.drawString(element.getMessage(),0,0);
-                    gfx.rotate(-rot);
-                    gfx.translate(-element.getX(),-element.getY());
+                } else if (element.getType()==GraphicsElement.IMAGE){
+                    gfx.translate(element.getX()+element.getWidth()/2,element.getY()+element.getHeight()/2);
+                    double rot = element.getRotation()*(Math.PI/180);
+                    gfx.rotate(rot);
+                    gfx.translate(-(element.getWidth()/2),-(element.getHeight()/2));
+                    gfx.drawImage(element.getImage(), null,0,0);
                 }
             }
         }

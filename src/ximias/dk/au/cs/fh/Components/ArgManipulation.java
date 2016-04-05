@@ -25,7 +25,7 @@ public class ArgManipulation {
     public static boolean isHex(String n){
         try{
             //noinspection ResultOfMethodCallIgnored
-            Integer.parseInt(n,16);
+            Long.parseLong(n,16);
         }catch (NumberFormatException e){
             return false;
         }

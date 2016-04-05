@@ -25,7 +25,7 @@ public class Set extends Command {
         }
         args = Mem.getValuesInArgs(args);
         String value = ArgManipulation.argsToString(1,args.length,args);
-        Lookup.getMemInstance().add(new MemPair(args[0], value));
+        Mem.addGlobal(new MemPair(args[0], value));
         return true;
     }
 }

@@ -60,6 +60,7 @@ public class ThreadedExechuter implements Runnable {
                 }
             }
         }
+        Mem.removeLocals();
         Viewer.doneExecution();
     }
 }

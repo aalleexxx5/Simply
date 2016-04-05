@@ -37,14 +37,14 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 if (ArgManipulation.isNumber(args[0]) && ArgManipulation.isNumber(args[2])) {
                     return Integer.valueOf(args[0]) <= Integer.valueOf(args[2]) || event(3);
                 } else {
-                    Viewer.print("An argument wasn't a number:" + args[0] + ", " + args[2]);
+                    Viewer.print("An argument wasn't a number: " + args[0] + ", " + args[2]);
                     return false;
                 }
             case "<":
                 if (ArgManipulation.isNumber(args[0]) && ArgManipulation.isNumber(args[2])) {
                     return Integer.valueOf(args[0]) >= Integer.valueOf(args[2]) || event(3);
                 } else {
-                    Viewer.print("An argument wasn't a number" + args[0] + ", " + args[2]);
+                    Viewer.print("An argument wasn't a number: " + args[0] + ", " + args[2]);
                     return false;
                 }
             case ">=":
@@ -52,7 +52,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 if (ArgManipulation.isNumber(args[0]) && ArgManipulation.isNumber(args[2])) {
                     return Integer.valueOf(args[0]) < Integer.valueOf(args[2]) || event(3);
                 } else {
-                    Viewer.print("An argument wasn't a number" + args[0] + ", " + args[2]);
+                    Viewer.print("An argument wasn't a number: " + args[0] + ", " + args[2]);
                     return false;
                 }
             case "<=":
@@ -60,7 +60,7 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
                 if (ArgManipulation.isNumber(args[0]) && ArgManipulation.isNumber(args[2])) {
                     return Integer.valueOf(args[0]) > Integer.valueOf(args[2]) || event(3);
                 } else {
-                    Viewer.print("An argument wasn't a number" + args[0] + ", " + args[2]);
+                    Viewer.print("An argument wasn't a number: " + args[0] + ", " + args[2]);
                     return false;
                 }
             case "number":

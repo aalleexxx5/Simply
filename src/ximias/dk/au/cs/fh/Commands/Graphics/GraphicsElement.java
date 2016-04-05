@@ -1,6 +1,7 @@
 package ximias.dk.au.cs.fh.Commands.Graphics;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by Alex on 03/04/2016.
@@ -10,6 +11,7 @@ public class GraphicsElement {
     private int[] xs,ys;
     private String message;
     private Color color;
+    private BufferedImage image;
     GraphicsElement(int type,int locX,int locY,Color color){
         this.type=type;
         this.x =locX;
@@ -81,10 +83,19 @@ public class GraphicsElement {
         this.message = message;
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
     public static final int PIXEL=0;
     public static final int LINE=1;
     public static final int RECTANGLE=2;
     public static final int POLYGON=3;
     public static final int CIRCLE=4;
     public static final int TEXT=5;
+    public static final int IMAGE=6;
 }

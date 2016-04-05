@@ -196,8 +196,10 @@ public class Viewer extends JFrame{
         runtimeFrame.getLayeredPane().remove(element);
         elementindex--;
     }
-    public static void drawElement(BufferedImage image){
+    public static boolean drawElement(BufferedImage image){
+        if (!runtimeFrame.isVisible()) return false;
         if (canvas == null) {
+            if (image==null)return false;
             canvas=new JLabel(new ImageIcon(image));
             canvas.setHorizontalAlignment(JLabel.LEFT);
             canvas.setVerticalAlignment(JLabel.TOP);
@@ -206,6 +208,7 @@ public class Viewer extends JFrame{
         }else{
             canvas.setIcon(new ImageIcon(image));
         }
+        return true;
     }
 
     public static void UpdateWindow(int x, int y, int width, int height){

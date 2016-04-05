@@ -26,14 +26,14 @@ public class Jumpto extends Command {
 
     @Override
     public String use(){
-        return "jumpto <destination>";
+        return "jumpto <destination>\nIf destination has 'update' in the name. Endless loop protection is disabled";
     }
 
     @Override
     public boolean execute(String[] args) {
         args = Mem.getValuesInArgs(args);
         if (Lookup.getSection().contains(args[0])){
-            if (lookup.getLastJump().equals(args[0])){
+            if (!lookup.didWait()&&args[0].toLowerCase().contains("update")&&lookup.getLastJump().equals(args[0])){
                 sameJumps++;
             }else{
                 sameJumps=0;
