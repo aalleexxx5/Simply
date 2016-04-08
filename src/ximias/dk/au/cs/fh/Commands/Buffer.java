@@ -4,6 +4,7 @@ import ximias.dk.au.cs.fh.Commands.Graphics.Graphics;
 
 /**
  * Created by Alex on 04/04/2016.
+ * Command to buffer a graphics element into memory
  */
 public class Buffer extends Command {
     @Override

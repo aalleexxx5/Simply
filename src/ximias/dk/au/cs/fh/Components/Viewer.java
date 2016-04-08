@@ -1,13 +1,12 @@
 package ximias.dk.au.cs.fh.Components;
 
-import ximias.dk.au.cs.fh.Commands.*;
+import ximias.dk.au.cs.fh.Commands.Run;
 import ximias.dk.au.cs.fh.Commands.Window;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -15,6 +14,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Alex on 05/01/2016.
  * Houses the UI. Prints the text. Changes the UI.
+ * TODO: Move stuff unrelated to above away from here
  */
 public class Viewer extends JFrame{
     private String filename;

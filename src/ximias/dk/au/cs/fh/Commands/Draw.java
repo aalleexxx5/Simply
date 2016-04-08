@@ -5,6 +5,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 04/04/2016.
+ * Command to draw a graphics element on screen, buffered or not.
  */
 public class Draw extends Command {
 

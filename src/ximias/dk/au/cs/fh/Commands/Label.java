@@ -9,7 +9,7 @@ import java.awt.*;
 
 /**
  * Created by Alex on 26/03/2016.
- * Command. Adds a label to the window
+ * Command. Adds a label to the window, with or without text
  */
 public class Label extends WindowElement {
     @Override

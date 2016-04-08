@@ -4,7 +4,7 @@ import ximias.dk.au.cs.fh.Components.*;
 
 /**
  * Created by Alex on 05/01/2016.
- * Command for addition.
+ * Command for addition of two numbers.
  */
 public class Add extends Command {
     @Override

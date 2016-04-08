@@ -7,7 +7,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 05/01/2016.
- * Command. Prints the arguments to screen
+ * Command. Prints the arguments to screen.
  */
 public class Echo extends Command {
     @Override

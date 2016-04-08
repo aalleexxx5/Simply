@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
- * Command. Defines a destination for Goto.. I mean JumpTo
+ * Command. Defines a destination for Goto.. Well, I mean JumpTo
  */
 public class Section extends Command {
     private final ArrayList<SectionPair> sections = new ArrayList<>();

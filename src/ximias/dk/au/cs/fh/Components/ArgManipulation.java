@@ -2,7 +2,7 @@ package ximias.dk.au.cs.fh.Components;
 
 /**
  * Created by Alex on 05/01/2016.
- * You can ask this class about everything useful relating to numbers
+ * You can ask this class about everything useful relating to arguments
  */
 public class ArgManipulation {
     public static boolean isNumber(String n){

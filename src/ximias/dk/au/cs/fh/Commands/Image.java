@@ -7,7 +7,7 @@ import java.awt.*;
 
 /**
  * Created by Alex on 01/04/2016.
- * Command. Lets you add an image to a window
+ * Window element Command. Lets you add an image to a window
  */
 public class Image extends WindowElement{
     @Override

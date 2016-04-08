@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 26/03/2016.
- * Command. Create a window
+ * Command. Create a window for manipulation.
  */
 public class Window extends Command
 {

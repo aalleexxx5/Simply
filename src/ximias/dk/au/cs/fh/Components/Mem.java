@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Alex on 05/01/2016.
- * Keeps track of the variables used.
+ * Keeps track of all variables used in the application.
  */
 public class Mem {
     private static ArrayList<MemPair> memory = new ArrayList<>();

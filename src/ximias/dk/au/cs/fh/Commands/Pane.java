@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 26/03/2016.
  * Command. For creating JPanes with elements inside. for those who don't think windows are hard enough
+ * Not implemented yet
  */
 public class Pane extends WindowElement {//TODO: add elements to this
     private static final ArrayList<WindowElement> windowElements=new ArrayList<>();

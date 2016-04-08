@@ -5,7 +5,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 24/03/2016.
- * Command. Changes the size of the text.
+ * Command. Changes the size of the text in console.
  */
 public class TextSize extends Command{
     @Override

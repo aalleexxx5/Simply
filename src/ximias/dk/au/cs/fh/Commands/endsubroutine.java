@@ -4,7 +4,7 @@ import ximias.dk.au.cs.fh.Components.IFlowchange;
 
 /**
  * Created by Alex on 05/01/2016.
- * Command, Ends a subroutine
+ * Command, used to end a subroutine
  */
 public class endsubroutine extends Command {
     private final IFlowchange lookup;
