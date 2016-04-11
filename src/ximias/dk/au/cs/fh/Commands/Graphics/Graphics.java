@@ -82,21 +82,18 @@ public class Graphics {//TODO: possibly needs optimising
     private static GraphicsPair toGraphicsPair(GraphicsBlock block){
         String[] commands = block.getElements();
         ArrayList<GraphicsElement> graphicsElements=new ArrayList<>();
-        ArrayList<SectionPair> section = new ArrayList<>();
         for (int line = 0; line < commands.length; line++){
             String element = commands[line];
             if (element.length()>4&&!element.toLowerCase().startsWith("graphics")&&!element.toLowerCase().startsWith("endgraphics")) {
                 String[] params = element.split(" ");
-                if (element.toLowerCase().startsWith("section")){
-                    section.add(new SectionPair(line,params[1]));
-
-                }else if(element.toLowerCase().startsWith("if")) {
+                if(element.toLowerCase().startsWith("if")) {
                     String[] args =new String[params.length-1];
                     System.arraycopy(params,1,args,0,params.length-1);
                     int a =GraphicIf.execute(args);
+                    if (a == -1) return null;
                     if (a > 0) {
                         if (element.toLowerCase().contains("jumpto")){
-                            for (SectionPair sectionPair : section) {
+                            for (SectionPair sectionPair : block.getSection()) {
                                 if (sectionPair.getKey().equals(params[params.length-1])){
                                     line=sectionPair.getLine();
                                     break;
@@ -109,15 +106,13 @@ public class Graphics {//TODO: possibly needs optimising
                         }
                     }
                 }else if (element.toLowerCase().contains("jumpto")){
-                    for (SectionPair sectionPair : section) {
+                    for (SectionPair sectionPair : block.getSection()) {
                         if (sectionPair.getKey().equals(params[1])){
                             line=sectionPair.getLine();
                         }
                     }
                 }else{
-                    for (int i = 0; i < commands.length; i++) {
-                        params=Mem.getValuesInArgs(params);
-                    }
+                    params=Mem.getValuesInArgs(params);
                     Color color = Color.black;
                     int locX, locY;
                     if (params.length>3&&params[0].length()>3 && ArgManipulation.isNumber(params[1]) && ArgManipulation.isNumber(params[2]) && ArgManipulation.isHex(params[3])) {
@@ -128,7 +123,7 @@ public class Graphics {//TODO: possibly needs optimising
                         } else if (params[3].length() == 9 && ArgManipulation.isNumber(params[3])) {
                             color = new Color(Integer.valueOf(params[3].substring(0,3)),Integer.valueOf(params[3].substring(3,6)),Integer.valueOf(params[3].substring(6,9)));
                         } else {
-                            Viewer.print(params[0]+": The length of the color value was not either 6(hex) or 9(dec) digits: "+params[3]);
+                            Viewer.print("Graphics error, line: " +line+": "+ params[0]+": The length of the color value was not either 6(hex) or 9(dec) digits: "+params[3]);
                             return null;
                         }
                         GraphicsElement ge;
@@ -139,7 +134,7 @@ public class Graphics {//TODO: possibly needs optimising
                             if (ArgManipulation.isNumber(params[4])) {
                                 width = Integer.valueOf(params[4]);
                             } else {
-                                Viewer.print("4th argument was not a number!");
+                                Viewer.print("Graphics line "+ line +" command: "+ params[0] + ": 4th argument'"+params[4]+"' was not a number.");
                                 width = 0;
                             }
                             if (element.startsWith("line")) {
@@ -148,7 +143,7 @@ public class Graphics {//TODO: possibly needs optimising
                                     ge.setWidth(width);
                                     ge.setHeight(Integer.valueOf(params[5]));
                                 } else {
-                                    Viewer.print("line, y-pos was not a number");
+                                    Viewer.print("Graphics line "+ line +" command: "+ params[0] + ": 5th argument'"+params[5]+"' was not a number.");
                                     ge = null;
                                 }
                             } else if (element.startsWith("rectangle")) {
@@ -158,7 +153,7 @@ public class Graphics {//TODO: possibly needs optimising
                                     ge.setHeight(Math.abs(Integer.valueOf(params[5])));
                                     ge.setRotation(Integer.valueOf(params[6]));
                                 } else {
-                                    Viewer.print("Rectangle, height or rotation was not a number or were missing");
+                                    Viewer.print("Graphics line "+line+" command:"+params[0]+" Rectangle, height ("+params[5]+") or rotation ("+params[6]+") was not a number or were missing");
                                     ge = null;
 
                                 }
@@ -181,7 +176,7 @@ public class Graphics {//TODO: possibly needs optimising
                                                 xs[(i - 1) / 2] = Integer.valueOf(params[i]);
                                             }
                                         } else {
-                                            Viewer.print("Polygon, a value was not a number");
+                                            Viewer.print("Graphics line: "+line+" Polygon, a value "+params[i]+" was not a number");
                                             ge = null;
 
                                         }
@@ -189,7 +184,7 @@ public class Graphics {//TODO: possibly needs optimising
                                     ge.setXs((xs));
                                     ge.setYs(ys);
                                 } else {
-                                    Viewer.print("Polygon, a value was not a number");
+                                    Viewer.print("Graphics line: "+line+" Polygon, a value "+params[5]+" was not a number");
                                     ge = null;
                                 }
                             } else if (element.startsWith("circle")) {
@@ -202,14 +197,16 @@ public class Graphics {//TODO: possibly needs optimising
                                     ge.setMessage(ArgManipulation.argsToString(5, params.length - 1, params));
                                     ge.setRotation(Integer.valueOf(params[params.length - 1]));
                                 } else {
-                                    Viewer.print("text, height or rotation was not a number");
+                                    Viewer.print("Graphics line: "+line+" text, rotation ("+params[params.length-1]+") was not a number");
                                     ge = null;
                                 }
                             }else{
                                 ge = null;
                             }
                         }
+                        if (ge != null) {
                             graphicsElements.add(ge);
+                        }
                     } else {
                         if (params[0].equalsIgnoreCase("draw")){
                             GraphicsElement ge;
@@ -321,7 +318,14 @@ class GraphicsBlock{
     private String key;
     private int width,height;
     private String[] elements;
+    private ArrayList<SectionPair> section = new ArrayList<>();
     GraphicsBlock(String name,int width,int height,String[] elements){
+        for (int i = 0; i < elements.length; i++) {
+            String element = elements[i];
+            if (element.toLowerCase().startsWith("section")) {
+                section.add(new SectionPair(i, element.substring(element.indexOf(" ")+1,element.length())));
+            }
+        }
         this.key=name;
         this.width=width;
         this.height=height;
@@ -342,6 +346,10 @@ class GraphicsBlock{
 
     public String[] getElements() {
         return elements;
+    }
+
+    public ArrayList<SectionPair> getSection() {
+        return section;
     }
 }
 class BufferedPair{

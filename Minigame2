@@ -1,0 +1,233 @@
+set state 0
+set color 000000
+set r 255
+set g 000
+set b 000
+set nr 000
+set ng 255
+set nb 255
+set spike 0
+set death false
+set spikeNum 80
+set playerX 500
+set playerY 930
+set speed 0
+set ncolor 0
+set distractionNum 0
+set distraction 0
+set time 2
+set playerWidth 20
+set playerHeight 20
+add playerRight *playerX *playerWidth
+add playerBottom *playerY *playerHeight
+window 100 0 1000 1000
+keyboard R down Right right
+keyboard L down left left
+section createSpikes
+execute spike
+inc spike
+if *spike < *spikeNum jumpto createSpikes
+run gameloop
+execute colorchange
+
+graphics a 1000 1000
+rectangle 0 0 *color 1000 1000 0
+rectangle *playerX *playerY *playerCol *playerWidth *playerHeight 0
+if *distractionNum < 0 jumpto endDis
+line *yd0 0 *disCol *yd0 1000
+if *distractionNum < 1 jumpto endDis
+line 0 *yd1 *disCol 1000 *yd1
+if *distractionNum < 2 jumpto endDis
+line *yd2 0 *disCol *yd2 1000
+if *distractionNum < 3 jumpto endDis
+line 0 *yd3 *disCol 1000 *yd3
+if *distractionNum < 4 jumpto endDis
+line 0 0 *disCol 1000 *yd4
+if *distractionNum < 5 jumpto endDis
+line 0 1000 *disCol 1000 *yd5
+
+
+section endDis
+local i 0
+section drawSpikes
+local sname s _ *i
+local x1 *x*sname
+local y1 *y*sname
+add x2 *x1 20
+add x3 *x1 10
+add y3 *y1 30
+polygon *x1 *y1 *enemyCol *x2 *y1 *x3 *y3 0
+inc i
+if *i < *spikeNum jumpto drawSpikes
+endgraphics
+
+subroutine spike
+local name s _ *spike
+random x*name 0 950
+random y*name 0 300
+endsubroutine
+
+subroutine gameloop
+section update
+if *distractionNum > 0 run updateDistraction
+set color *r _ *g _ *b
+set playerCol *g _ *b _ *r
+set enemyCol *b _ *r _ *g
+if *ncolor = 1 set disCol *nr _ *ng _ *nb
+set spike 0
+section updateSpikes
+execute spikeFall
+inc spike
+if *spike < *spikeNum jumpto updateSpikes
+draw a 0 0
+wait *time
+if *death = true exit
+jumpto update
+endsubroutine
+
+subroutine updateDistraction
+local i 0
+section start
+local name d _ *i
+if *y*name number jumpto DisValues
+set y*name 0
+set dir*name 1
+section DisValues
+if *y*name > 999 set dir*name 0
+if *y*name < 1 set dir*name 1
+if *dir*name = 1 inc y*name
+if *dir*name = 0 dec y*name
+inc i
+if *i < *distractionNum jumpto start
+endsubroutine
+
+subroutine spikeFall
+local name s _ *spike
+if *speed < 3 inc y*name
+if *speed >= 3 inc y*name 2
+if *y*name < 990 jumpto collision
+random y*name 0 300 
+random x*name 0 950
+if *spike > 0 exit
+inc speed
+inc distractionNum
+exit
+section collision
+local y1 0
+add y1 *y*name 30
+if *x*name > *playerRight exit
+if *y1 < *playerY exit
+if *y*name > *playerBottom exit
+local x1 0
+add x1 *x*name 20
+if *x1 < *playerX exit
+set playerCol 000000
+endsubroutine
+
+subroutine left
+if *playerX < 10 exit
+dec playerX 10
+add playerRight *playerX *playerWidth
+endsubroutine
+
+subroutine right
+if *playerX > 950 exit
+inc playerX 10
+add playerRight *playerX *playerWidth
+endsubroutine
+
+subroutine colorchange
+local amount 1
+local freq 10
+section colorupdate
+if *state = 0 jumpto red
+if *state = 1 jumpto green
+if *state = 2 jumpto blue
+section red
+local col1 *r
+local col2 *g
+jumpto colstart
+section green
+local col1 *g
+local col2 *b
+jumpto colstart
+section blue
+local col1 *b
+local col2 *r
+jumpto colstart
+
+section colstart
+if *col2 = 255 jumpto subtract
+inc col2 *amount
+jumpto colend
+section subtract
+dec col1 *amount
+jumpto colend
+
+
+section colend
+if *col1 = 000 jumpto color1
+if *col1 < 100 local col1 0 _ *col1
+if *col1 < 10 local col1 0 _ *col1
+section color1
+if *col2 = 000 jumpto color2
+if *col2 < 100 local col2 0 _ *col2
+if *col2 < 10 local col2 0 _ *col2
+section color2
+if *state = 0 jumpto redend
+if *state = 1 jumpto greenend
+if *state = 2 jumpto blueend
+
+
+section redend
+set r *col1
+set g *col2
+jumpto finished
+section greenend
+set g *col1
+set b *col2
+jumpto finished
+section blueend
+set b *col1
+set r *col2
+jumpto finished
+
+section statechange
+add state *state 1
+dec freq
+if *freq = 1 local freq 2
+if *speed < 3 local amount 1
+if *speed >= 6 local amount 3
+if *speed >= 9 local amount 5
+if *speed >= 12 local amount 15
+if *speed >= 15 local amount 17
+if *speed >= 18 local amount 51
+if *speed >= 21 local amount 85
+jumpto finally
+
+section finished
+if *col1 = 000 jumpto statechange
+
+section finally
+set ncolor 0
+sub nr 255 *r
+if *nr = 000 jumpto ng
+if *nr < 100 set nr 0 _ *nr
+if *nr < 10 set nr 0 _ *nr
+section ng
+sub ng 255 *g
+if *ng = 000 jumpto nb
+if *ng < 100 set ng 0 _ *ng
+if *ng < 10 set ng 0 _ *ng
+section nb
+sub nb 255 *b
+if *nb = 000 jumpto nend
+if *nb < 100 set nb 0 _ *nb
+if *nb < 10 set nb 0 _ *nb
+set ncolor 1
+section nend
+if *state = 3 set state 0
+wait *freq
+jumpto colorupdate
+endsubroutine
+

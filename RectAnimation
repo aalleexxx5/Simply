@@ -1,0 +1,105 @@
+echo animation test
+set r 255
+set g 000
+set b 000
+set col1 *r
+set col2 *g
+set color 000000
+set state 0
+set rotation 0
+set direction 1
+set x 0
+sub y 800 *x
+window 100 100 800 800
+run updateFrame
+
+graphics animation 800 800
+rectangle 0 0 *color 800 800 0
+rectangle 0 *x *elementcolor 800 5 0
+rectangle *x 0 *elementcolor 5 800 0
+rectangle 0 *y *elementcolor 800 5 0
+rectangle *y 0 *elementcolor 5 800 0
+draw element 50 50 *rotation
+draw element 50 100 0
+draw element 50 150 0
+endgraphics
+
+graphics element 10 50
+set elementcolor *b _ *r _ *g
+rectangle 0 0 *elementcolor 10 50 0
+endgraphics
+
+subroutine colorchange
+if *state = 0 jumpto red
+if *state = 1 jumpto green
+if *state = 2 jumpto blue
+section red
+set col1 *r
+set col2 *g
+jumpto colstart
+section green
+set col1 *g
+set col2 *b
+jumpto colstart
+section blue
+set col1 *b
+set col2 *r
+jumpto colstart
+
+section colstart
+if *col2 = 255 jumpto subtract
+add col2 *col2 1
+jumpto colend
+section subtract
+sub col1 *col1 1
+jumpto colend
+
+
+section colend
+if *col1 = 000 jumpto color1
+if *col1 < 100 set col1 0 _ *col1
+if *col1 < 10 set col1 0 _ *col1
+section color1
+if *col2 = 000 jumpto color2
+if *col2 < 100 set col2 0 _ *col2
+if *col2 < 10 set col2 0 _ *col2
+section color2
+if *state = 0 jumpto redend
+if *state = 1 jumpto greenend
+if *state = 2 jumpto blueend
+
+
+section redend
+set r *col1
+set g *col2
+jumpto finished
+section greenend
+set g *col1
+set b *col2
+jumpto finished
+section blueend
+set b *col1
+set r *col2
+jumpto finished
+
+section finished
+if *col1 = 000 add state *state 1
+if *state = 3 set state 0
+set color *r _ *g _ *b
+endsubroutine
+
+subroutine updateFrame
+section a
+execute colorchange
+buffer element
+draw animation 0 0
+add rotation *rotation 1
+if *rotation >= 180 set rotation 0
+if *direction = 1 add x *x 1
+if *direction = 0 sub x *x 1
+if *x = 800 set direction 0
+if *x = 0 set direction 1
+sub y 800 *x
+wait 2
+jumpto a
+endsubroutine
