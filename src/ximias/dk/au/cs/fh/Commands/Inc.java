@@ -7,7 +7,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 05/04/2016.
- * Increment a var
+ * Command. Increment a variable
  */
 public class Inc extends Command {
     @Override

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 14/01/2016.
  * Command. Runs a subroutine in a new thread.
- * you thought multithreading was hard? try multithreading in the same function, sharing the same variables. Concurrency issues, here I come!
+ * You thought multithreading was hard? try multithreading in the same function, sharing the same variables. Concurrency issues, here I come!
  */
 public class Run extends Command {
     private  static ArrayList<Thread> threads = new ArrayList<>();

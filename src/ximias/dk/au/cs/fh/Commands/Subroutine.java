@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 05/01/2016.
  * Command. This is the closest you get to a function.
+ * TODO: Nesting, add a no endsubroutine error, Move initialisation to a different class
  */
 public class Subroutine extends Command {
     private final ArrayList<SectionPair> routines = new ArrayList<>();

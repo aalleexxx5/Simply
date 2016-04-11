@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
- * Keeps track of everything. EVERYTHING! (except symbols, that is Constants's job)
+ * Keeps track of everything. EVERYTHING!
+ * Houses commands and state variables. State variables might be moved for cleaner code
  */
 public class Lookup implements IFlowchange{
     private boolean wait=false;

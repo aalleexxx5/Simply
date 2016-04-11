@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 14/01/2016.
- * Keeps track of all the things Lookup Can't when a new thread id running.
+ * Houses thread-specific commands and state variables.
  */
-class ThreadedLookup implements IFlowchange {
+class ThreadedLookup implements IFlowchange {//TODO: some commands are not thread specific and does not have concurrency issues
     private String lastJump="", lastSubroutine;
     private boolean flowChange = true;
     private boolean wait=false;

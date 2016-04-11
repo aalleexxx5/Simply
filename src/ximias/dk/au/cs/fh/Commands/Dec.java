@@ -7,7 +7,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 05/04/2016.
- * Command. Decrement a var
+ * Command. Decrement a variable
  */
 public class Dec extends Command {
     @Override

@@ -5,7 +5,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 25/03/2016.
- * Command. For resizing the window
+ * Command. For resizing the console window
  */
 public class WindowSize extends Command {
     @Override

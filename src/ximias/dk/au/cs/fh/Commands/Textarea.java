@@ -4,17 +4,13 @@ import ximias.dk.au.cs.fh.Components.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 /**
  * Created by Alex on 03/04/2016.
- * Command. add text field to frame
+ * Command. add text area to frame.
  */
 public class Textarea extends WindowElement {
     @Override

@@ -8,9 +8,6 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ColorConvertOp;
-import java.awt.image.LookupOp;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -43,7 +40,7 @@ public class Graphics {//TODO: possibly needs optimising
             lock.unlock();
         }
     }
-    public static boolean buffer(String key){
+    public static boolean buffer(String key){//TODO Allow for transparency/non-square elements
         lock.lock();
         try{
             for (BufferedPair bufferedImage : bufferedImages) {

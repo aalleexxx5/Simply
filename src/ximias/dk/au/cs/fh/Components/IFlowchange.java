@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 14/01/2016.
- * Interface for Lookup and ThreadedLookup Allows polymorphism in commands.
+ * Interface for allowing polymorphism for commands to receive thread specific state variables.
  */
 public interface IFlowchange {
     boolean run(String cmd,String[] args);

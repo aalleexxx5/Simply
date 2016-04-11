@@ -1,10 +1,13 @@
 package ximias.dk.au.cs.fh.Commands;
 
-import ximias.dk.au.cs.fh.Components.*;
+import ximias.dk.au.cs.fh.Components.ArgManipulation;
+import ximias.dk.au.cs.fh.Components.Mem;
+import ximias.dk.au.cs.fh.Components.MemPair;
+import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 05/01/2016.
- * Command. Sets a variable to a value.
+ * Command. Sets a variable to a value globally.
  */
 public class Set extends Command {
     @Override

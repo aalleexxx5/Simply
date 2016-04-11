@@ -5,7 +5,7 @@ import ximias.dk.au.cs.fh.Components.Viewer;
 
 /**
  * Created by Alex on 24/03/2016.
- * Command. Changes the colour of the text.
+ * Command. Changes the colour of the text in console.
  */
 public class TextColor extends Command {
     @Override

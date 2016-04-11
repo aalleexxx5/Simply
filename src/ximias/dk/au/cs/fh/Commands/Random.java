@@ -4,7 +4,7 @@ import ximias.dk.au.cs.fh.Components.*;
 
 /**
  * Created by Alex on 01/04/2016.
- * Command. Gives a random number
+ * Command. Gives a random number between two values.
  */
 public class Random extends Command{
     @Override
