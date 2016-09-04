@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -95,13 +96,13 @@ public class Viewer extends JFrame{
         pack();
 
         runButton.addActionListener(e -> {
-            Lookup.getMemInstance().removeAll();
+            lookup=new Lookup(FileManager.readFileList(filename));
+            Mem.removeAll();
             Window.removeAll();
             output.setText("");
             if (runtimeFrame != null) {
                 runtimeFrame.getLayeredPane().removeAll();
             }
-            lookup=new Lookup(FileManager.readFileList(filename));
             exeThread = new Thread(new Exechuter(lookup));
             exeThread.start();
             runButton.setEnabled(false);
@@ -120,6 +121,9 @@ public class Viewer extends JFrame{
 
         commandButton.addActionListener(e -> {
             if(commandButton.isSelected()){//button is pressed
+                if (lookup == null) {
+                    lookup = new Lookup(FileManager.readFileList(filename));
+                }
                 SwingUtilities.invokeLater(this::createCommandList);
             }else{//button is released
                 commandFrame.dispose();
