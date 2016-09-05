@@ -3,6 +3,7 @@ package ximias.dk.au.cs.fh.Components;
 import ximias.dk.au.cs.fh.Commands.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -21,55 +22,50 @@ public class Lookup implements IFlowchange{
     private final Jumpto jumpto = new Jumpto(this);
     public Lookup(ArrayList<String> l){
         lines = l;
-        if (!commands.isEmpty()){
-            commands.remove(section);
-            commands.remove(subroutine);
-        }
         section = new Section(l);
         subroutine = new Subroutine(l,this);
-        if (commands.isEmpty()){
-            commands.add(new Echo());
-            commands.add(new Set());
-            commands.add(jumpto);
-            commands.add(new If(this));
-            commands.add(new Add());
-            commands.add(new Sub());
-            commands.add(new Mul());
-            commands.add(new Div());
-            commands.add(new Wait(this));
-            //commands.add(section);
-            //commands.add(subroutine);
-            commands.add(new endsubroutine(this));
-            commands.add(new Clear());
-            commands.add(new Run(this));
-            commands.add(new Input());
-            commands.add(new Exit(this));
-            commands.add(new TextColor());
-            commands.add(new TextSize());
-            commands.add(new TextStyle());
-            commands.add(new WindowSize());
-            commands.add(new Execute());
-            commands.add(new Popup());
-            commands.add(new Dialog());
-            commands.add(new Window());
-            commands.add(new Button());
-            commands.add(new Label());
-            commands.add(new Pane());
-            commands.add(new Random());
-            commands.add(new Keyboard());
-            commands.add(new Image());
-            commands.add(new Save());
-            commands.add(new Load());
-            commands.add(new Log());
-            commands.add(new Textarea());
-            commands.add(new Draw());
-            commands.add(new Buffer());
-            commands.add(new Local());
-            commands.add(new Inc());
-            commands.add(new Dec());
+        while(!commands.isEmpty()){
+            commands.remove(0);
         }
+        commands.add(new Echo());
+        commands.add(new Set());
+        commands.add(jumpto);
+        commands.add(new If(this));
+        commands.add(new Add());
+        commands.add(new Sub());
+        commands.add(new Mul());
+        commands.add(new Div());
+        commands.add(new Wait(this));
         commands.add(section);
         commands.add(subroutine);
+        commands.add(new endsubroutine(this));
+        commands.add(new Clear());
+        commands.add(new Run(this));
+        commands.add(new Input());
+        commands.add(new Exit(this));
+        commands.add(new TextColor());
+        commands.add(new TextSize());
+        commands.add(new TextStyle());
+        commands.add(new WindowSize());
+        commands.add(new Execute());
+        commands.add(new Popup());
+        commands.add(new Dialog());
+        commands.add(new Window());
+        commands.add(new Button());
+        commands.add(new Label());
+        commands.add(new Pane());
+        commands.add(new Random());
+        commands.add(new Keyboard());
+        commands.add(new Image());
+        commands.add(new Save());
+        commands.add(new Load());
+        commands.add(new Log());
+        commands.add(new Textarea());
+        commands.add(new Draw());
+        commands.add(new Buffer());
+        commands.add(new Local());
+        commands.add(new Inc());
+        commands.add(new Dec());
     }
 
     public boolean run(String cmd, String[] args){

@@ -111,12 +111,7 @@ public class Viewer extends JFrame{
 
         submit.addActionListener(e -> {
             synchronized (lock){
-                lock.notifyAll();/*
-                try {
-                    Thread.sleep(1050);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }*/
+                lock.notifyAll();
             }
         });
 
@@ -173,13 +168,15 @@ public class Viewer extends JFrame{
         commandTable.getColumnModel().getColumn(0).setMinWidth((commandLength*7)+2);
         commandTable.getColumnModel().getColumn(0).setMaxWidth((commandLength*7)+4);
         commandTable.getColumnModel().getColumn(1).setMinWidth(descriptionLength*6);
+        commandTable.setAutoCreateRowSorter(true);
+        commandTable.getRowSorter().toggleSortOrder(0);
         JScrollPane scrollpane = new JScrollPane(commandTable);
         commandTable.getSelectionModel().addListSelectionListener(e -> {
             if (commandTable.getSelectedRow()>=0){
                 JOptionPane.showMessageDialog(null,Lookup.getCommandUse(commandTable.getSelectedRow()),"Usage",JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        commandFrame.setPreferredSize(new Dimension(commandTable.getMinimumSize().width,commandTable.getRowHeight()*(commandTable.getRowCount()+4)));
+        commandFrame.setPreferredSize(new Dimension(commandTable.getMinimumSize().width,commandTable.getRowHeight()*(commandTable.getRowCount())+70));
         commandFrame.add(scrollpane);
         commandFrame.setVisible(true);
         commandFrame.addWindowListener(new WindowAdapter(){
