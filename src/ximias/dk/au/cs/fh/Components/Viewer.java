@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
@@ -122,7 +123,7 @@ public class Viewer extends JFrame{
         commandButton.addActionListener(e -> {
             if(commandButton.isSelected()){//button is pressed
                 if (lookup == null) {
-                    lookup = new Lookup(FileManager.readFileList(filename));
+                    lookup = new Lookup(new ArrayList<String>());
                 }
                 SwingUtilities.invokeLater(this::createCommandList);
             }else{//button is released
@@ -136,7 +137,7 @@ public class Viewer extends JFrame{
         commandFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         int commandLength=0;
         int descriptionLength =0;
-        for(int i=0;i<Lookup.getNumCommands();i++){
+        for(int i=0;i<lookup.getNumCommands();i++){
             commandLength = Math.max(commandLength,Lookup.getCommandName(i).length());
             descriptionLength = Math.max(descriptionLength,Lookup.getCommandDescription(i).length());
         }
