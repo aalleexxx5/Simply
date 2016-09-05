@@ -220,8 +220,9 @@ public class Viewer extends JFrame{
             runtimeFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             runtimeFrame.addWindowListener(new WindowAdapter(){
                 public void windowClosing(WindowEvent winEvt) {
-                    runtimeFrame.setVisible(false);
+                    runtimeFrame.setVisible(false);//TODO interrupt all threads, wait for them to close, and close the window
                     canvas=null;
+                    exeThread.interrupt();
                     doneExecution();
                 }
             });
@@ -246,6 +247,7 @@ public class Viewer extends JFrame{
         else if(exeThread.equals(Thread.currentThread())&&Run.noThreads()){
             runButton.setEnabled(true);
         }
+        //exeThread.interrupt();
     }
 
     public static String getInput(){

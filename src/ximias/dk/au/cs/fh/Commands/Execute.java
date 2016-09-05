@@ -31,6 +31,8 @@ public class Execute extends Command {
             try {
                 exeThread.join();
             } catch (InterruptedException ignored) {
+                Viewer.print("Program was terminated while waiting for an execute to finish");
+                return true;
             }
             return true;
         }
