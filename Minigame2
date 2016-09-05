@@ -98,7 +98,7 @@ if *y*name < 1 set dir*name 1
 if *dir*name = 1 inc y*name
 if *dir*name = 0 dec y*name
 inc i
-if *i < *distractionNum jumpto start
+if *i <= *distractionNum jumpto start
 endsubroutine
 
 subroutine spikeFall
