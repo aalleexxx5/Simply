@@ -18,4 +18,6 @@ exit
 
 subroutine pop
 popup hello! information hello you!
+clearwindow
+label when the big button is pressed/newlinea new thread dies. 302 164 200 30 aaffff
 endsubroutine

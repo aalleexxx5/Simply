@@ -66,6 +66,7 @@ public class Lookup implements IFlowchange{
         commands.add(new Local());
         commands.add(new Inc());
         commands.add(new Dec());
+        commands.add(new ClearWindow());
     }
 
     public boolean run(String cmd, String[] args) throws InterruptedException {

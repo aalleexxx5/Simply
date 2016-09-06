@@ -214,6 +214,14 @@ public class Viewer extends JFrame{
         runtimeFrame.getLayeredPane().remove(element);
         elementindex--;
     }
+    public static void removeAllElements(){
+        while (runtimeFrame.getLayeredPane().getComponents().length>0){
+            runtimeFrame.getLayeredPane().remove(0);
+            elementindex--;
+        }
+        Window.removeAll();
+        runtimeFrame.repaint();
+    }
     public static boolean drawElement(BufferedImage image) throws InterruptedException {
         if (!runtimeFrame.isVisible()) {
             throw new InterruptedException("frame closed");
@@ -231,17 +239,25 @@ public class Viewer extends JFrame{
         return true;
     }
 
-    public static void UpdateWindow(int x, int y, int width, int height){
+    public static void updateWindow(int x, int y, int width, int height){
         if (runtimeFrame==null) {
             runtimeFrame = new JFrame();
             runtimeFrame.setLayout(null);
             runtimeFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             runtimeFrame.addWindowListener(new WindowAdapter(){
                 public void windowClosing(WindowEvent winEvt) {
-                    runtimeFrame.setVisible(false);//TODO interrupt all threads, wait for them to close, and close the window
+                    runtimeFrame.setVisible(false);
                     canvas=null;
-                    exeThread.interrupt();
                     doneExecution();
+                    if (!runButton.isEnabled()){
+                        try {
+                            Thread.sleep(300);
+                            doneExecution();
+                            if (!runButton.isEnabled()){
+                                print("The application is still running");
+                            }
+                        } catch (InterruptedException ignored) {}
+                    }
                 }
             });
         }

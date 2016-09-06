@@ -1,16 +1,12 @@
-echo hello world
-
-window 200 200 500 500
-set labeltext Hello world!
-label *labeltext 0 0 500 20 ffffff
-set i 1
-
-button Click 0 20 200 20 buttonPress
-
-comment subroutines below
-endcomment
-
-subroutine buttonPress
-echo you have pressed the button *i times
-inc i
-endsubroutine
+windowsize 800 600
+textstyle Monospaced
+echo          @@@@                @@@@@@@@@@@@@@       @@             @@
+echo         @@  @@              @@@@          @@@     @@             @@
+echo        @@    @@            @@@@                   @@             @@
+echo       @@      @@            @@@@                  @@             @@
+echo      @@@@@@@@@@@@              @@@@@@@            @@@@@@@@@@@@@@@@@
+echo     @@@@@@@@@@@@@@               @@@@@@@          @@@@@@@@@@@@@@@@@
+echo    @@            @@                     @@@@      @@             @@
+echo   @@              @@                     @@@@     @@             @@
+echo  @@                @@      @@@          @@@@      @@             @@
+echo @@                  @@       @@@@@@@@@@@@@@       @@             @@

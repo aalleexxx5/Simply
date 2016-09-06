@@ -37,7 +37,7 @@ public class Window extends Command
                 return false;
             }
         }
-        Viewer.UpdateWindow(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]),Integer.valueOf(args[3]));
+        Viewer.updateWindow(Integer.valueOf(args[0]),Integer.valueOf(args[1]),Integer.valueOf(args[2]),Integer.valueOf(args[3]));
         return true;
     }
     private static final ReentrantLock updateLock = new ReentrantLock();
