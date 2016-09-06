@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Interface for allowing polymorphism for commands to receive thread specific state variables.
  */
 public interface IFlowchange {
-    boolean run(String cmd,String[] args);
+    boolean run(String cmd,String[] args) throws InterruptedException;
     boolean getFlowChange();
     void setFlowChange(boolean f);
     void setCurrentLines(ArrayList<String> l);

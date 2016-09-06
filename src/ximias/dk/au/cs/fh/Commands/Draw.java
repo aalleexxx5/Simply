@@ -20,7 +20,7 @@ public class Draw extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public boolean execute(String[] args) throws InterruptedException {
         return Viewer.drawElement(Graphics.getImage(args[0]));
     }
 }

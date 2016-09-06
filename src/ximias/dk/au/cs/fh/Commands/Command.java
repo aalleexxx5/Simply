@@ -28,5 +28,5 @@ public abstract class Command {
      * @param args the arguments the command receives
      * @return <b>boolean</b weather the command was executed correctly. <br/> If false, the program returns an error and terminates the thread calling this command.
      */
-    public abstract boolean execute(String[] args);
+    public abstract boolean execute(String[] args) throws InterruptedException;
 }

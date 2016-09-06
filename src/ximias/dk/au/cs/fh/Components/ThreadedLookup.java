@@ -57,7 +57,7 @@ class ThreadedLookup implements IFlowchange {//TODO: some commands are not threa
         commands.add(new Dec());
     }
 
-    public boolean run(String cmd, String[] args) {
+    public boolean run(String cmd, String[] args) throws InterruptedException {
         for (Command command : commands) {
             if (command.name().equalsIgnoreCase(cmd)) {
                 if (command.execute(args)) {
@@ -75,7 +75,9 @@ class ThreadedLookup implements IFlowchange {//TODO: some commands are not threa
     public boolean runCommand(String cmd, String[] args) {
         for (Command command : commands) {
             if (command.name().equalsIgnoreCase(cmd)) {
-                return command.execute(args);
+                try {
+                    return command.execute(args);
+                } catch (InterruptedException ignored) {}
             }
         }
         return false;

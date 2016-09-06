@@ -68,7 +68,7 @@ public class Lookup implements IFlowchange{
         commands.add(new Dec());
     }
 
-    public boolean run(String cmd, String[] args){
+    public boolean run(String cmd, String[] args) throws InterruptedException {
         for (Command command : commands){
             if (command.name().equalsIgnoreCase(cmd)){
                 if (command.execute(args)) {
@@ -86,7 +86,9 @@ public class Lookup implements IFlowchange{
     public boolean runCommand(String cmd, String[] args){
         for (Command command : commands){
             if(command.name().equalsIgnoreCase(cmd)){
-                return command.execute(args);
+                try {
+                    return command.execute(args);
+                } catch (InterruptedException ignored) {}
             }
         }
         return false;
@@ -95,7 +97,9 @@ public class Lookup implements IFlowchange{
     public static boolean runMainCommand(@SuppressWarnings("SameParameterValue") String cmd, String[] args){
         for (Command command : commands){
             if(command.name().equalsIgnoreCase(cmd)){
-                return command.execute(args);
+                try {
+                    return command.execute(args);
+                } catch (InterruptedException ignored) {}
             }
         }
         return false;

@@ -43,18 +43,22 @@ class Exechuter implements Runnable{
                     }
                 }
                 if(!cmd.equals("skip")){
-                    if (lookup.run(cmd, arg.toArray(new String[arg.size()]))) {
-                        i++;
-                        if (lookup.getFlowChange()) {//If a command changed the lines
+                    try {
+                        if (lookup.run(cmd, arg.toArray(new String[arg.size()]))) {
+                            i++;
+                            if (lookup.getFlowChange()) {//If a command changed the lines
+                                break;
+                            }
+                        } else {
+                            if (lookup.getLastJump() == null) {
+                                Viewer.print("An error occurred in line " + i + " :" + cmd);
+                            }else {
+                                Viewer.print("An error occurred "+i+" lines after the section " + lookup.getLastJump() + "\nat the command " + cmd);
+                            }
                             break;
                         }
-                    } else {
-                        if (lookup.getLastJump() == null) {
-                            Viewer.print("An error occurred in line " + i + " :" + cmd);
-                        }else {
-                            Viewer.print("An error occurred "+i+" lines after the section " + lookup.getLastJump() + "\nat the command " + cmd);
-                        }
-                        break;
+                    } catch (InterruptedException e) {
+                        return;
                     }
                 }
 
