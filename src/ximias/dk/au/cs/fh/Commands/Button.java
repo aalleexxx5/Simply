@@ -14,7 +14,7 @@ import java.awt.*;
 public class Button extends WindowElement {
     @Override
     public String use() {
-        return "button <name> <locationX> <locationY> <width> <height> <subroutine>\nruns the subroutine when the button is pressed";
+        return "button <name> <locationX> <locationY> <width> <height> (optional) <subroutine>\nruns the subroutine when the button is pressed";
     }
 
     @Override

@@ -5,7 +5,6 @@ button useless button 302 100 200 30
 button almost useless button 302 132 200 30 pop
 label when the big button is pressed/newlinea new thread dies. 302 164 200 30 ffaaaa
 wait 2000
-button Press this new button twice 110 110 200 100
 
 set a 0
 subroutine a

@@ -179,7 +179,7 @@ public class Viewer extends JFrame{
         JScrollPane scrollpane = new JScrollPane(commandTable);
         commandTable.getSelectionModel().addListSelectionListener(e -> {
             if (commandTable.getSelectedRow()>=0){
-                JOptionPane.showMessageDialog(null,Lookup.getCommandUse(commandTable.getSelectedRow()),"Usage",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null,Lookup.getCommandUse(commandTable.convertRowIndexToModel(commandTable.getSelectedRow())),"Usage",JOptionPane.INFORMATION_MESSAGE);
             }
         });
         commandFrame.setPreferredSize(new Dimension(commandTable.getMinimumSize().width,commandTable.getRowHeight()*(commandTable.getRowCount())+70));
