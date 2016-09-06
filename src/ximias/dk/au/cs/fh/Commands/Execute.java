@@ -31,7 +31,7 @@ public class Execute extends Command {
             try {
                 exeThread.join();
             } catch (InterruptedException ignored) {
-                Viewer.print("Program was terminated while waiting for an execute to finish");
+                Viewer.print("execute ended unexpectedly");
                 return true;
             }
             return true;

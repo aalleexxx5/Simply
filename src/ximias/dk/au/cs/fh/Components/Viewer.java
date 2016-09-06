@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 05/01/2016.
- * Houses the UI. Prints the text. Changes the UI.
- * TODO: Move stuff unrelated to above away from here
+ * Contains all user-interaction.<br/>
+ * Starts and restarts the application, contains the window opened during runtime, and all its components.
  */
 public class Viewer extends JFrame{
     private String filename;
@@ -36,6 +36,9 @@ public class Viewer extends JFrame{
     private static JFrame commandFrame;
     private Lookup lookup;
 
+    /**
+     * Creates the the user-interface, layout and sets action listeners for the buttons.
+     */
     private void createUI(){
         win = this;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -127,6 +130,9 @@ public class Viewer extends JFrame{
         });
     }
 
+    /**
+     * Opens a list of commands in a separate popup window.
+     */
     private void createCommandList(){
         commandFrame = new JFrame();
         commandFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -190,16 +196,28 @@ public class Viewer extends JFrame{
     private static JFrame runtimeFrame;
     private static int elementindex = 1;
     private static JLabel canvas;
+
+    /**
+     * adds an element to a frame opened during runtime
+     * @param element the element to be added, can be any component.
+     */
     public static void addElement(Component element){
         runtimeFrame.getLayeredPane().add(element,elementindex);
         elementindex++;
     }
+
+    /**
+     * removed an element from a frame opened during runtime
+     * @param element the element to be removed, can be any component.
+     */
     public static void removeElement(Component element){
         runtimeFrame.getLayeredPane().remove(element);
         elementindex--;
     }
-    public static boolean drawElement(BufferedImage image){
-        if (!runtimeFrame.isVisible()) return false;
+    public static boolean drawElement(BufferedImage image) throws InterruptedException {
+        if (!runtimeFrame.isVisible()) {
+            throw new InterruptedException("frame closed");
+        }
         if (canvas == null) {
             if (image==null)return false;
             canvas=new JLabel(new ImageIcon(image));

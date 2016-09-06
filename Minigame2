@@ -29,6 +29,7 @@ inc spike
 if *spike < *spikeNum jumpto createSpikes
 run gameloop
 execute colorchange
+exit
 
 graphics a 1000 1000
 rectangle 0 0 *color 1000 1000 0
@@ -122,6 +123,7 @@ local x1 0
 add x1 *x*name 20
 if *x1 < *playerX exit
 set playerCol 000000
+set death true
 endsubroutine
 
 subroutine left
