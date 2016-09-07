@@ -33,6 +33,9 @@ public class If extends Command { // if <value1> <condition> <value2> <event whe
         switch (args[1]) {
             case "="://add a number version of this, so an error is returned if a star is forgotten in a var
                 return !args[0].equals(args[2]) || event(3);
+            case "!=":
+            case "=!":
+                return args[0].equals(args[2]) || event(3);
             case ">":
                 if (ArgManipulation.isNumber(args[0]) && ArgManipulation.isNumber(args[2])) {
                     return Integer.valueOf(args[0]) <= Integer.valueOf(args[2]) || event(3);

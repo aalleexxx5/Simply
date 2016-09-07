@@ -1,0 +1,29 @@
+echo this is an example of multiple views in the same window
+window 200 200 500 500
+set view 0
+run createTabs
+
+subroutine createTabs
+button View One 0 0 200 20 viewOne
+button View Two 204 0 200 20 viewTwo
+endsubroutine
+
+subroutine viewOne
+if *view = 1 exit
+clearwindow
+run createTabs
+label view1Label 0 0 500 500 ccccff false
+label This View is seperate /newlinefrom the other one 150 260 200 40
+button centered button 150 240 200 20
+set view 1
+endsubroutine
+
+subroutine viewTwo
+if *view = 2 exit
+clearwindow
+run createTabs
+label view1Label 0 0 500 500 ffffcc false
+button centered-ish button 150 220 200 20
+set view 2
+endsubroutine
+
