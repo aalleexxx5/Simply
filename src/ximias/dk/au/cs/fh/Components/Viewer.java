@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 05/01/2016.
  * Contains all user-interaction.<br/>
- * Starts and restarts the application, contains the window opened during runtime, and all its components.
+ * Starts and restarts the application, contains the window opened during runtime and all its components.
  */
 public class Viewer extends JFrame{
     private String filename;
@@ -35,6 +35,9 @@ public class Viewer extends JFrame{
     private static JToggleButton commandButton;
     private static JFrame commandFrame;
     private Lookup lookup;
+    private static JFrame runtimeFrame;
+    private static int elementindex = 1;
+    private static JLabel canvas;
 
     /**
      * Creates the the user-interface, layout and sets action listeners for the buttons.
@@ -59,6 +62,7 @@ public class Viewer extends JFrame{
         outputContainer.setPreferredSize(new Dimension(400, 180));
         outputContainer.setAutoscrolls(true);
 
+        //upper part of  UI
         SpringLayout topContainerLayout = new SpringLayout();
         JPanel topContainer  = new JPanel(topContainerLayout);
         topContainerLayout.putConstraint(SpringLayout.SOUTH,topContainer,60,SpringLayout.NORTH,topContainer);
@@ -76,7 +80,7 @@ public class Viewer extends JFrame{
         topContainer.add(runButton);
         topContainer.add(commandButton);
 
-
+        //Lower part of UI
         SpringLayout inputsContainerLayout = new SpringLayout();
         JPanel inputsContainer = new JPanel(inputsContainerLayout);
         inputsContainerLayout.putConstraint(SpringLayout.SOUTH,inputsContainer,20,SpringLayout.NORTH,inputsContainer);
@@ -131,7 +135,7 @@ public class Viewer extends JFrame{
     }
 
     /**
-     * Opens a list of commands in a separate popup window.
+     * Opens a list of commands in a separate window.
      */
     private void createCommandList(){
         commandFrame = new JFrame();
@@ -193,9 +197,6 @@ public class Viewer extends JFrame{
         commandFrame.pack();
     }
 
-    private static JFrame runtimeFrame;
-    private static int elementindex = 1;
-    private static JLabel canvas;
 
     /**
      * adds an element to a frame opened during runtime
@@ -207,13 +208,17 @@ public class Viewer extends JFrame{
     }
 
     /**
-     * removed an element from a frame opened during runtime
+     * remove an element from a frame opened during runtime
      * @param element the element to be removed, can be any component.
      */
     public static void removeElement(Component element){
         runtimeFrame.getLayeredPane().remove(element);
         elementindex--;
     }
+
+    /**
+     * remove all elements from frame. This clears all components.
+     */
     public static void removeAllElements(){
         while (runtimeFrame.getLayeredPane().getComponents().length>0){
             runtimeFrame.getLayeredPane().remove(0);
@@ -222,6 +227,13 @@ public class Viewer extends JFrame{
         Window.removeAll();
         runtimeFrame.repaint();
     }
+
+    /**
+     * draws an image on screen
+     * @param image the image to draw.
+     * @return always true.
+     * @throws InterruptedException
+     */
     public static boolean drawElement(BufferedImage image) throws InterruptedException {
         if (!runtimeFrame.isVisible()) {
             throw new InterruptedException("frame closed");
@@ -236,9 +248,16 @@ public class Viewer extends JFrame{
         }else{
             canvas.setIcon(new ImageIcon(image));
         }
-        return true;
+        return true;//TODO is always true
     }
 
+    /**
+     * updates the parameters of the window. This is not used for updating the components of the frame.
+     * @param x The x coordinate of the window
+     * @param y The y coordinate of the window
+     * @param width The width of the window
+     * @param height The height of the window
+     */
     public static void updateWindow(int x, int y, int width, int height){
         if (runtimeFrame==null) {
             runtimeFrame = new JFrame();
@@ -264,14 +283,27 @@ public class Viewer extends JFrame{
         runtimeFrame.setBounds(x,y,width,height);
         runtimeFrame.setVisible((width!=0&&height!=0));
     }
+
+    /**
+     * Adds a keyEventDispatcher to the program.
+     * @param e the keyEventDispatcher to add.
+     */
     public static void addKeyboard(KeyEventDispatcher e){
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e);
     }
 
+    /**
+     * removes a keyEventDispatcher from the program.
+     * @param e the keyEventDispatcher to remove.
+     */
     public static void removeKeyboard(KeyEventDispatcher e) {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(e);
     }
 
+    /**
+     * Function for making to check for ended program execution.
+     * Should be called whenever a thread ends.
+     */
     static void doneExecution(){
         if (runtimeFrame!=null&&runtimeFrame.isVisible()){
             return;
@@ -284,6 +316,10 @@ public class Viewer extends JFrame{
         //exeThread.interrupt();
     }
 
+    /**
+     * Function for getting the text inputted in the input bar. Blocks thread till an input is received.
+     * @return The string inputted into the input text field upon hitting the submit button.
+     */
     public static String getInput(){
         input.setEditable(true);
         submit.setEnabled(true);
@@ -301,6 +337,11 @@ public class Viewer extends JFrame{
         return ret;
     }
 
+    /**
+     * Function to change the font of the output log
+     * @param type the type(sans-serif) or name(arial) of the font.
+     * @param size the size of the font.
+     */
     public static void setFont(String type ,int size){
         if (type==null||type.isEmpty()){
             output.setFont(new Font(output.getFont().getName(),Font.PLAIN,size));
@@ -309,20 +350,37 @@ public class Viewer extends JFrame{
             output.setFont(new Font(type,Font.PLAIN,output.getFont().getSize()));
         }
     }
+
+    /**
+     * changes the text color of the output log.
+     * @param value the color as an integer.
+     */
     public static void setTextColour(int value){
             output.setForeground(new Color(value));
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * Resizes the output window. For resizing the runtime frame, see updateWindow
+     * @param w the new width of the frame.
+     * @param h the new height of the frame.
+     */
     public static void resizeApp(int w, int h){
         win.setSize(w,h);
     }
 
+    /**
+     * outputs text in the output log.
+     * @param line the line of text to print.
+     */
     public static void print(String line){
         System.out.println(line);
             output.append(line+"\n");
             output.setCaretPosition(output.getDocument().getLength());
     }
 
+    /**
+     * Clears the output log of all text.
+     */
     public static void clear(){
         System.out.println("screen was cleared \n \n");
         output.setText("");

@@ -10,12 +10,6 @@ import java.io.InputStreamReader;
 class Main {
 
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         if (args.length<1){
             System.out.println("Please input the file to run.");
             System.out.println("App created by Ximias");

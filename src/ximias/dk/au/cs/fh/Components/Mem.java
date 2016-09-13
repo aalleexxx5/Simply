@@ -26,6 +26,11 @@ public class Mem {
             lock.unlock();
         }
     }
+
+    /**
+     * Adds a global variable.
+     * @param item the memPair object to store.
+     */
     public static void addGlobal(MemPair item){
         lock.lock();
         try {
@@ -38,6 +43,10 @@ public class Mem {
         }
     }
 
+    /**
+     * Removes a variable.
+     * @param memKey the key of the variable to be removed.
+     */
     private static void remove(String memKey){
         lock.lock();
         try {
@@ -51,6 +60,11 @@ public class Mem {
             lock.unlock();
         }
     }
+
+    /**
+     * Add a local variable.
+     * @param item the memPair object to store.
+     */
     public static void addLocal(MemPair item){
         lock.lock();
         try {
@@ -62,6 +76,11 @@ public class Mem {
             lock.unlock();
         }
     }
+
+    /**
+     * Remove a local variable.
+     * @param memKey the key of the variable to remove.
+     */
     private static void removeLocal(String memKey){
         lock.lock();
         try {
@@ -75,6 +94,10 @@ public class Mem {
             lock.unlock();
         }
     }
+
+    /**
+     * Remove all local variables. Used when exiting local scope.
+     */
     public static void removeLocals(){
         lock.lock();
         try {
@@ -89,25 +112,20 @@ public class Mem {
         }
     }
 
-    private boolean hasLocal(String key){
-        lock.lock();
-        try {
-            for (MemPair pair : local) {
-                if (pair.getKey().equals(Thread.currentThread().getName()+key)){
-                    return true;
-                }
-            }
-            return false;
-        }finally {
-            lock.unlock();
-        }
-    }
-
+    /**
+     * Removes all variables, called on a memory reset.
+     */
     public static void removeAll(){
         memory = new ArrayList<>();
         local = new ArrayList<>();
     }
 
+    /**
+     * Returns the value associated with a key in a memory pair with global scope.
+     * @param memKey The name of the variable.
+     * @return The value of the variable with the given name.
+     * Empty string if no variable exists with the given name.
+     */
     private static String getValue(String memKey){
         lock.lock();
         try {
@@ -123,6 +141,13 @@ public class Mem {
             lock.unlock();
         }
     }
+
+    /**
+     * Returns the value associated with a key in a memory pair with local scope.
+     * @param memKey The name of the variable.
+     * @return The value of the variable with the given name.
+     * Empty string if no variable exists with the given name.
+     */
     private static String getLocalValue(String memKey){
         lock.lock();
         try {
@@ -136,6 +161,12 @@ public class Mem {
             lock.unlock();
         }
     }
+
+    /**
+     * Returns whether a local variable with the given key exists.
+     * @param key the name of the variable to search for.
+     * @return true, if a variable with the given key exists. False in all other cases.
+     */
     private static boolean containsLocalKey(String key){
         lock.lock();
         try {
@@ -150,6 +181,11 @@ public class Mem {
         }
     }
 
+    /**
+     * Returns whether a global variable with the given key exists.
+     * @param key the name of the variable to search for.
+     * @return true, if a variable with the given key exists, False in all other cases.
+     */
     private static boolean containsKey(String key){
         lock.lock();
         try {
@@ -164,6 +200,11 @@ public class Mem {
         }
     }
 
+    /**
+     * Utility function for converting a string array containing a mix of values and variable names, to only values.
+     * @param args arguments which may contain variables.
+     * @return arguments with all variable names converted to values.
+     */
     public static String[] getValuesInArgs(String[] args){
         String[] ans = new String[args.length];
         for (int i=0; i<args.length;i++){

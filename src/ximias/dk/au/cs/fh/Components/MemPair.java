@@ -2,7 +2,7 @@ package ximias.dk.au.cs.fh.Components;
 
 /**
  * Created by Alex on 05/01/2016.
- * Joins a key and a value for a variable name and value
+ * Key-value singleton for pairing a variable name with the underlying data.
  */
 public class MemPair {
     private final String key;

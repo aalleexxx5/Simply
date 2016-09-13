@@ -2,35 +2,59 @@ package ximias.dk.au.cs.fh.Components;
 
 /**
  * Created by Alex on 05/01/2016.
- * You can ask this class about everything useful relating to arguments
+ * Contains utility functions relating to manipulating arguments
  */
 public class ArgManipulation {
-    public static boolean isNumber(String n){
+    /**
+     * Returns weather <b>candidate</b> is a number.
+     * @param candidate candidate to check
+     * @return true if candidate is a number
+     */
+    public static boolean isNumber(String candidate){
         try{
             //noinspection ResultOfMethodCallIgnored
-            Integer.valueOf(n);
+            Integer.valueOf(candidate);
         }catch (NumberFormatException e){
             return false;
         }
         return true;
     }
 
-    public static boolean isNumberAndPositive(String n){
+    /**
+     * Returns weather candidate is a number
+     * @param candidate value to check
+     * @return true if candidate is a number and positive
+     */
+    public static boolean isNumberAndPositive(String candidate){
         try {
-            return (Integer.valueOf(n) >= 0);
+            return (Integer.valueOf(candidate) >= 0);
         }catch (NumberFormatException e){
             return false;
         }
     }
-    public static boolean isHex(String n){
+
+    /**
+     * Returns weather candidate is a valid hexadecimal number
+     * @param candidate value to check
+     * @return true if candidate is a valid hex number
+     */
+    public static boolean isHex(String candidate){
         try{
             //noinspection ResultOfMethodCallIgnored
-            Long.parseLong(n,16);
+            Long.parseLong(candidate,16);
         }catch (NumberFormatException e){
             return false;
         }
         return true;
     }
+
+    /**
+     * Creates a string from a string array of arguments, escaping and looking up variables
+     * @param start The index to start at
+     * @param stop The index to end at
+     * @param args The string array to convert
+     * @return Returns a string from the inputted array
+     */
     public static String argsToString(int start, int stop,String[] args) {
         String value = "";
         for (int i = start; i < stop; i++) {
@@ -45,6 +69,12 @@ public class ArgManipulation {
         value = value.replaceAll(Constants.NEWLINE_SYMBOL, "\n");
         return value;
     }
+
+    /**
+     * Escapes the text for text displayed on screen
+     * @param args the arguments to escape
+     * @return the escaped text
+     */
     public static String[] escape(String[] args){
         for (int i = 0; i < args.length; i++) {
             args[i]=args[i].replaceAll(Constants.NEWLINE_SYMBOL,"\n");
@@ -52,7 +82,13 @@ public class ArgManipulation {
         }
         return args;
     }
+
+    /**
+     * Escapes text as HTML for user interfaces
+     * @param text the input
+     * @return string formatted in HTML
+     */
     public static String toHTML(String text){
-        return "<html>"+text.replaceAll("\n","<br>")+"</html>";
+        return "<html>"+text.replaceAll("\n","<br/>")+"</html>";
     }
 }

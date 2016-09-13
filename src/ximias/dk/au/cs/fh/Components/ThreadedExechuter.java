@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 14/01/2016.
- * Executes code in a separate thread. this is created by the Run command (and execute, but don't tell anyone)
+ * Executes code in a separate thread with a separate local scope.
  */
 public class ThreadedExechuter implements Runnable {
     private ArrayList<String> lines;
